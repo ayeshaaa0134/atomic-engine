@@ -1,4 +1,4 @@
-import { Eraser, Camera, Search } from 'lucide-react'
+import { Eraser, Camera } from 'lucide-react'
 
 export function MemoryView() {
     return (
@@ -31,7 +31,7 @@ export function MemoryView() {
                     <div className="grid grid-cols-[repeat(auto-fill,minmax(8px,1fr))] gap-[2px]">
                         {Array.from({ length: 600 }).map((_, i) => {
                             // Synthetic pattern
-                            const r = Math.sin(i * 0.1) * Math.cos(i * 0.05);
+                            Math.sin(i * 0.1) * Math.cos(i * 0.05);
                             let color = 'bg-green-500';
                             let opacity = 'opacity-30';
 
