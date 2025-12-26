@@ -1,13 +1,39 @@
 # How to Use AtomicTree Extension with Your Own C++ Code
 
+##  How to Install
+ 
+ ### Option A: Official Marketplace (Recommended)
+ 1. Open **VS Code**.
+ 2. Go to the **Extensions** view (`Ctrl+Shift+X`).
+ 3. Search for **"AtomicTree Engine"**.
+ 4. Click **Install**.
+ 
+ ### Option B: Manual Installation (VSIX)
+ 1. Download the `atomic-tree-engine-1.0.0.vsix` file.
+ 2. In VS Code, press `Ctrl+Shift+P` and type **"Extensions: Install from VSIX"**.
+ 3. Select the file and restart VS Code.
+ 
+ ---
+ 
 ## Overview
 Write custom C++ code using AtomicTree and automatically visualize performance metrics in VS Code!
+
+### 💡 Why do I need both the Extension and GitHub files?
+*   **The VS Code Extension (Visualizer)**: This is the **Monitor**. It shows you the live charts and heatmaps. You install this once from the Marketplace.
+*   **The GitHub Files (Engine Library)**: This is the **Engine**. To write C++ code that uses AtomicTree, you need the header files (`.h`) and backend logic from the repository so your compiler can build your program.
 
 ---
 
 ## Step 1: Create Your C++ File
 
-Create any `.cpp` file in the `AtomicTree/examples/` folder (or anywhere in the project).
+Create any `.cpp` file. To use the AtomicTree library, you must have the engine files from the GitHub repository.
+
+### 🧱 Required Setup for "Anywhere" Usage
+
+If you are creating code outside the main project folder:
+1. **Clone the Engine**: `git clone https://github.com/ayeshaaa0134/atomic-engine.git`
+2. **Library Path**: Note the path to the `backend/include` and `backend/lib` folders.
+3. **Headers**: Use the absolute path in your `#include` or add the folder to your compiler's include path.
 
 ### Example Code Template:
 
@@ -188,7 +214,7 @@ Updates charts/heatmaps in real-time
 ### Extension doesn't show metrics?
 - Check your code outputs JSON to `stdout`
 - Use `std::endl` to flush output
-- Ensure extension is installed (`F5` in extension folder)
+- Ensure extension is installed from the Marketplace or VSIX.
 
 ### Build fails?
 - Verify MinGW is installed: `g++ --version`
@@ -222,9 +248,9 @@ The extension will display these in the dashboard automatically!
 
 ## Summary
 
-✅ Write C++ code using AtomicTree
-✅ Output JSON metrics to stdout
-✅ Press F5 in VS Code
-✅ Extension automatically visualizes everything!
+ Write C++ code using AtomicTree
+ Output JSON metrics to stdout
+ Press F5 in VS Code
+ Extension automatically visualizes everything!
 
 Now you can **code, run, and visualize** all in one workflow! 🚀
