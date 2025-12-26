@@ -9,6 +9,8 @@ import {
     VSCodeTag
 } from '@vscode/webview-ui-toolkit/react';
 
+const vscode = (window as any).acquireVsCodeApi();
+
 // --- DATA SIMULATION ENGINE ---
 // generates plausible B-Tree signals
 const useDataEngine = (active: boolean) => {
@@ -45,11 +47,25 @@ const App = () => {
 
 // --- LEFT PANEL: CONTROLS ---
 const ControlsPanel = () => {
+    const [isRunning, setIsRunning] = useState(false);
+
+    const handleStart = () => {
+        setIsRunning(true);
+        vscode.postMessage({ command: 'runBenchmark' });
+    };
+
+    const handleReset = () => {
+        setIsRunning(false);
+        vscode.postMessage({ command: 'reset' });
+    };
+
     return (
         <div className="flex col gap-4 p-4 h-full">
             <div className="flex row items-center gap-2">
-                <div className="spinner"></div>
-                <h2 className="text-sm font-bold uppercase tracking-wide">Engine Controller</h2>
+                <div className={isRunning ? "spinner" : "status-dot"}></div>
+                <h2 className="text-sm font-bold uppercase tracking-wide">
+                    {isRunning ? "Engine Running" : "Engine Idle"}
+                </h2>
             </div>
             <VSCodeDivider />
 
@@ -82,10 +98,19 @@ const ControlsPanel = () => {
 
             <div className="grow"></div>
 
-            <VSCodeButton appearance="primary" className="w-full">
+            <VSCodeButton
+                appearance="primary"
+                className="w-full"
+                disabled={isRunning}
+                onClick={handleStart}
+            >
                 <span className="codicon codicon-play mr-2"></span> START BENCHMARK
             </VSCodeButton>
-            <VSCodeButton appearance="secondary" className="w-full">
+            <VSCodeButton
+                appearance="secondary"
+                className="w-full"
+                onClick={handleReset}
+            >
                 RESET ENGINE
             </VSCodeButton>
         </div>

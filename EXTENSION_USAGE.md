@@ -1,6 +1,6 @@
 # How to Use AtomicTree Extension with Your Own C++ Code
 
-##  How to Install
+## 📦 How to Install
  
  ### Option A: Official Marketplace (Recommended)
  1. Open **VS Code**.
@@ -18,22 +18,13 @@
 ## Overview
 Write custom C++ code using AtomicTree and automatically visualize performance metrics in VS Code!
 
-### 💡 Why do I need both the Extension and GitHub files?
-*   **The VS Code Extension (Visualizer)**: This is the **Monitor**. It shows you the live charts and heatmaps. You install this once from the Marketplace.
-*   **The GitHub Files (Engine Library)**: This is the **Engine**. To write C++ code that uses AtomicTree, you need the header files (`.h`) and backend logic from the repository so your compiler can build your program.
+**Zero Setup Required**: The AtomicTree engine library is now bundled directly with this extension. You don't need to clone any repositories or configure include paths—the extension handles everything automatically.
 
 ---
 
 ## Step 1: Create Your C++ File
 
-Create any `.cpp` file. To use the AtomicTree library, you must have the engine files from the GitHub repository.
-
-### 🧱 Required Setup for "Anywhere" Usage
-
-If you are creating code outside the main project folder:
-1. **Clone the Engine**: `git clone https://github.com/ayeshaaa0134/atomic-engine.git`
-2. **Library Path**: Note the path to the `backend/include` and `backend/lib` folders.
-3. **Headers**: Use the absolute path in your `#include` or add the folder to your compiler's include path.
+Create any `.cpp` file. You can now use `#include "B_tree.h"` and `#include "manager.h"` without any manual setup! The extension will automatically find the bundled library files for you.
 
 ### Example Code Template:
 

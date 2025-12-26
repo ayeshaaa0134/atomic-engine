@@ -14,6 +14,11 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.window.registerWebviewViewProvider('atomicTree.visualizer', vizProvider)
     );
 
+    // Register Task Provider
+    context.subscriptions.push(
+        vscode.tasks.registerTaskProvider('atomic-tree-build', new AtomicTreeTaskProvider(context))
+    );
+
     context.subscriptions.push(
         vscode.commands.registerCommand('atomicTree.startProfile', () => {
             // Auto-detect running AtomicTree program from terminal
@@ -32,15 +37,69 @@ export function activate(context: vscode.ExtensionContext) {
             vscode.window.showInformationMessage('AtomicTree Profile Stopped');
         }),
         vscode.commands.registerCommand('atomicTree.runCurrentFile', async () => {
-            // Build and run current C++ file with AtomicTree
-            await vscode.commands.executeCommand('workbench.action.tasks.runTask',
-                'Run AtomicTree with Extension');
+            const activeEditor = vscode.window.activeTextEditor;
+            if (!activeEditor || !activeEditor.document.fileName.endsWith('.cpp')) {
+                vscode.window.showErrorMessage('Please open a C++ file to run AtomicTree.');
+                return;
+            }
 
-            // Start visualization
-            vizProvider.sendMessage({ command: 'start' });
-            vscode.window.showInformationMessage('Running AtomicTree code with live visualization...');
+            // Build task
+            const buildTask = await createBuildTask(context, activeEditor.document.uri);
+            const execution = await vscode.tasks.executeTask(buildTask);
+
+            // Wait for build to complete before starting viz
+            vscode.tasks.onDidEndTaskProcess(e => {
+                if (e.execution === execution && e.exitCode === 0) {
+                    vizProvider.sendMessage({ command: 'start' });
+                    vscode.window.showInformationMessage('Build successful. Running AtomicTree code with live visualization...');
+
+                    // Run the compiled executable in terminal
+                    const exePath = activeEditor.document.fileName.replace('.cpp', '.exe');
+                    const terminal = vscode.window.activeTerminal || vscode.window.createTerminal('AtomicTree');
+                    terminal.show();
+                    terminal.sendText(`& "${exePath}"`);
+                }
+            });
         })
     );
+}
+
+async function createBuildTask(context: vscode.ExtensionContext, fileUri: vscode.Uri): Promise<vscode.Task> {
+    const enginePath = vscode.Uri.joinPath(context.extensionUri, 'engine');
+    const includePath = vscode.Uri.joinPath(enginePath, 'include').fsPath;
+    const srcPath = vscode.Uri.joinPath(enginePath, 'src').fsPath;
+
+    const definition: vscode.TaskDefinition = {
+        type: 'atomic-tree-build',
+        file: fileUri.fsPath
+    };
+
+    const commandLine = `g++ -fdiagnostics-color=always -g "${fileUri.fsPath}" "${srcPath}\\*.cpp" -I"${includePath}" -o "${fileUri.fsPath.replace('.cpp', '.exe')}"`;
+
+    return new vscode.Task(
+        definition,
+        vscode.TaskScope.Workspace,
+        'AtomicTree Build',
+        'AtomicTree',
+        new vscode.ShellExecution(commandLine),
+        ['$gcc']
+    );
+}
+
+class AtomicTreeTaskProvider implements vscode.TaskProvider {
+    constructor(private context: vscode.ExtensionContext) { }
+
+    provideTasks(): vscode.ProviderResult<vscode.Task[]> {
+        return [];
+    }
+
+    async resolveTask(_task: vscode.Task): Promise<vscode.Task | undefined> {
+        const definition = _task.definition;
+        if (definition.type === 'atomic-tree-build' && definition.file) {
+            return createBuildTask(this.context, vscode.Uri.file(definition.file));
+        }
+        return undefined;
+    }
 }
 
 function listenToTerminalOutput(vizProvider: AtomicTreeWebviewProvider) {
@@ -77,7 +136,11 @@ class AtomicTreeWebviewProvider implements vscode.WebviewViewProvider {
         webviewView.webview.onDidReceiveMessage(data => {
             switch (data.command) {
                 case 'runBenchmark':
-                    vscode.window.showInformationMessage(`Starting AtomicTree Benchmark (${this._type})...`);
+                    vscode.commands.executeCommand('atomicTree.runCurrentFile');
+                    break;
+                case 'reset':
+                    vscode.window.showInformationMessage('AtomicTree: Resetting memory state...');
+                    // Logic to clear data files could go here
                     break;
             }
         });

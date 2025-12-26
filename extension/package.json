@@ -8,7 +8,7 @@
   "contributors": [
     "Hadia Naveed"
   ],
-  "publisher": "AyeshaSiddiqa",
+  "publisher": "ayesha-241419",
   "repository": {
     "type": "git",
     "url": "https://github.com/ayeshaaa0134/atomic-engine"
@@ -16,6 +16,13 @@
   "engines": {
     "vscode": "^1.80.0"
   },
+  "files": [
+    "dist",
+    "media",
+    "engine",
+    "README.md",
+    "icon.png"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
     "viewsContainers": {
@@ -63,6 +70,20 @@
         "command": "atomicTree.runCurrentFile",
         "title": "AtomicTree: Run Current File with Visualization",
         "icon": "$(run)"
+      }
+    ],
+    "taskDefinitions": [
+      {
+        "type": "atomic-tree-build",
+        "required": [
+          "file"
+        ],
+        "properties": {
+          "file": {
+            "type": "string",
+            "description": "The file to build"
+          }
+        }
       }
     ]
   },

@@ -224,6 +224,14 @@ canvas {
     animation: spin 1s linear infinite;
 }
 
+.status-dot {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    background: transparent;
+}
+
 @keyframes spin {
     to {
         transform: rotate(360deg);
