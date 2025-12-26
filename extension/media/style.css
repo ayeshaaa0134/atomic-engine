@@ -1,0 +1,266 @@
+:root {
+    --bg-color: var(--vscode-editor-background);
+    --text-color: var(--vscode-foreground);
+    --border-color: var(--vscode-widget-border);
+    --accent-color: var(--vscode-button-background);
+    --grid-line: rgba(128, 128, 128, 0.2);
+    --chart-blue: #3794ff;
+    --chart-green: #29b6f6;
+    --chart-red: #f14c4c;
+    --chart-purple: #c586c0;
+    --font-mono: 'SF Mono', Monaco, Menlo, Consolas, 'Ubuntu Mono', 'Liberation Mono', 'DejaVu Sans Mono', 'Courier New', monospace;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    font-family: var(--vscode-font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif);
+    font-size: 13px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    overflow: hidden;
+    /* App-like feel */
+}
+
+/* === UTILITIES === */
+.flex {
+    display: flex;
+}
+
+.col {
+    flex-direction: column;
+}
+
+.row {
+    flex-direction: row;
+}
+
+.gap-2 {
+    gap: 8px;
+}
+
+.gap-4 {
+    gap: 16px;
+}
+
+.p-2 {
+    padding: 8px;
+}
+
+.p-4 {
+    padding: 16px;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.h-full {
+    height: 100%;
+}
+
+.grow {
+    flex-grow: 1;
+}
+
+.shrink-0 {
+    flex-shrink: 0;
+}
+
+.hidden {
+    display: none;
+}
+
+.relative {
+    position: relative;
+}
+
+.absolute {
+    position: absolute;
+}
+
+.border-b {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.border-t {
+    border-top: 1px solid var(--border-color);
+}
+
+.border {
+    border: 1px solid var(--border-color);
+}
+
+.rounded {
+    border-radius: 4px;
+}
+
+.font-mono {
+    font-family: var(--font-mono);
+}
+
+.text-xs {
+    font-size: 11px;
+}
+
+.text-sm {
+    font-size: 12px;
+}
+
+.text-lg {
+    font-size: 16px;
+}
+
+.font-bold {
+    font-weight: 600;
+}
+
+.uppercase {
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.opacity-50 {
+    opacity: 0.5;
+}
+
+.opacity-70 {
+    opacity: 0.7;
+}
+
+/* === COMPONENTS === */
+.tab-bar {
+    background: var(--vscode-editorGroupHeader-tabsBackground);
+    display: flex;
+    user-select: none;
+}
+
+.tab {
+    padding: 8px 12px;
+    cursor: pointer;
+    border-right: 1px solid var(--border-color);
+    background: transparent;
+    opacity: 0.7;
+    transition: all 0.2s;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.tab:hover {
+    background: var(--vscode-list-hoverBackground);
+    opacity: 1;
+}
+
+.tab.active {
+    background: var(--bg-color);
+    border-top: 2px solid var(--accent-color);
+    opacity: 1;
+    font-weight: 600;
+}
+
+.metric-card {
+    background: var(--vscode-editor-widget-background);
+    padding: 12px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.1s;
+}
+
+.metric-card:hover {
+    transform: translateY(-1px);
+}
+
+.chart-container {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+}
+
+.log-entry {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 2px 4px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.log-entry:hover {
+    background: var(--vscode-list-hoverBackground);
+}
+
+.log-time {
+    color: var(--vscode-descriptionForeground);
+    margin-right: 8px;
+}
+
+.log-info {
+    color: var(--chart-blue);
+}
+
+.log-error {
+    color: var(--chart-red);
+    font-weight: bold;
+}
+
+.log-warn {
+    color: var(--chart-green);
+}
+
+/* === HEATMAP === */
+canvas {
+    image-rendering: pixelated;
+}
+
+/* === LOADING SPINNER === */
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border-color);
+    border-top-color: var(--accent-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* === SIDEBAR CONTROLS === */
+.control-group {
+    background: var(--vscode-sideBar-background);
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.control-label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    opacity: 0.8;
+}
+
+/* === SCROLLBARS === */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(121, 121, 121, 0.4);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(100, 100, 100, 0.7);
+}

@@ -1,0 +1,92 @@
+{
+  "name": "atomic-tree-engine",
+  "displayName": "AtomicTree Engine",
+  "description": "Visualizer and Benchmark Tool for AtomicTree NVM Storage",
+  "version": "1.0.0",
+  "icon": "icon.png",
+  "author": "Ayesha Siddiqa",
+  "contributors": [
+    "Hadia Naveed"
+  ],
+  "publisher": "AyeshaSiddiqa",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ayeshaaa0134/atomic-engine"
+  },
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "main": "./dist/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "atomicTree-controls",
+          "title": "AtomicTree Config",
+          "icon": "media/atom-icon.svg"
+        },
+        {
+          "id": "atomicTree-visualizer",
+          "title": "AtomicTree Viz",
+          "icon": "media/chart-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "atomicTree-controls": [
+        {
+          "id": "atomicTree.controls",
+          "type": "webview",
+          "name": "Configuration"
+        }
+      ],
+      "atomicTree-visualizer": [
+        {
+          "id": "atomicTree.visualizer",
+          "type": "webview",
+          "name": "Live Metrics"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "atomicTree.startProfile",
+        "title": "Start Profile",
+        "icon": "$(play)"
+      },
+      {
+        "command": "atomicTree.stopProfile",
+        "title": "Stop Profile",
+        "icon": "$(debug-stop)"
+      },
+      {
+        "command": "atomicTree.runCurrentFile",
+        "title": "AtomicTree: Run Current File with Visualization",
+        "icon": "$(run)"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "lint": "eslint src --ext ts"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.80.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "ts-loader": "^9.4.0",
+    "typescript": "^5.1.0",
+    "webpack": "^5.88.0",
+    "webpack-cli": "^5.1.0",
+    "style-loader": "^3.3.3",
+    "css-loader": "^6.8.1"
+  },
+  "dependencies": {
+    "@vscode/webview-ui-toolkit": "^1.2.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}
