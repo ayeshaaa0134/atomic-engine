@@ -28,8 +28,9 @@ export function activate(context: vscode.ExtensionContext) {
             vizProvider.sendMessage({ command: 'start' });
             vscode.window.showInformationMessage('AtomicTree Profile Started - Extension listening for metrics');
 
-            // Listen to terminal output
-            listenToTerminalOutput(vizProvider);
+            // Start visualization
+            vizProvider.sendMessage({ command: 'start' });
+            vscode.window.showInformationMessage('AtomicTree Profile Started - Extension listening for metrics');
         }),
         vscode.commands.registerCommand('atomicTree.stopProfile', () => {
             controlsProvider.sendMessage({ command: 'stop' });
@@ -56,6 +57,16 @@ export function activate(context: vscode.ExtensionContext) {
                     // Run the compiled executable in terminal
                     const exePath = activeEditor.document.fileName.replace('.cpp', '.exe');
                     const terminal = vscode.window.activeTerminal || vscode.window.createTerminal('AtomicTree');
+
+                    // Hook into terminal data to parse JSON
+                    // Note: onDidWriteTerminalData is the correct API for intercepting terminal output
+                    const disposable = (vscode.window as any).onDidWriteTerminalData((e: any) => {
+                        if (e.terminal === terminal) {
+                            parseTerminalData(e.data, vizProvider);
+                        }
+                    });
+                    context.subscriptions.push(disposable);
+
                     terminal.show();
                     terminal.sendText(`& "${exePath}"`);
                 }
@@ -102,11 +113,28 @@ class AtomicTreeTaskProvider implements vscode.TaskProvider {
     }
 }
 
-function listenToTerminalOutput(vizProvider: AtomicTreeWebviewProvider) {
-    // This would parse JSON-L output from terminal
-    // For now, we'll simulate with the vizProvider
-    // In production, use vscode.window.onDidWriteTerminalData
+let terminalBuffer = '';
+function parseTerminalData(data: string, vizProvider: AtomicTreeWebviewProvider) {
+    terminalBuffer += data;
+    const lines = terminalBuffer.split(/\r?\n/);
+    terminalBuffer = lines.pop() || '';
+
+    for (const line of lines) {
+        const trimmed = line.trim();
+        if (trimmed.includes('{"type":') && trimmed.includes('}')) {
+            try {
+                const start = trimmed.indexOf('{');
+                const end = trimmed.lastIndexOf('}');
+                if (start !== -1 && end !== -1) {
+                    const jsonStr = trimmed.substring(start, end + 1);
+                    const json = JSON.parse(jsonStr);
+                    vizProvider.sendMessage({ command: 'data', payload: json });
+                }
+            } catch (err) { }
+        }
+    }
 }
+
 
 class AtomicTreeWebviewProvider implements vscode.WebviewViewProvider {
     private _view?: vscode.WebviewView;
