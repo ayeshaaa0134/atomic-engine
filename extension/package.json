@@ -44,14 +44,16 @@
         {
           "id": "atomicTree.controls",
           "type": "webview",
-          "name": "Configuration"
+          "name": "Configuration",
+          "icon": "media/atom-icon.svg"
         }
       ],
       "atomicTree-visualizer": [
         {
           "id": "atomicTree.visualizer",
           "type": "webview",
-          "name": "Live Metrics"
+          "name": "Live Metrics",
+          "icon": "media/chart-icon.svg"
         }
       ]
     },
