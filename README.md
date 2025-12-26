@@ -280,7 +280,6 @@ The engine runs on **any system** by emulating persistent memory with regular fi
 **Co-author**: Hadia Naveed (241457)  
 **Institution**: Air University Islamabad, Department of Creative Technologies  
 **Year**: 2025-2026
-
 ---
 ##  Contributing
 
@@ -288,10 +287,4 @@ This is a research prototype. For questions or collaboration:
 - Open an issue on GitHub
 - Contact the authors via git or institutional email
 
----
 
-## 🎓 Acknowledgments
-
-Special thanks to the authors of NV-Tree and WORT papers for pioneering persistent memory data structures.
-
-Inspired by modern cloud infrastructure needs (Azure CXL Memory Expansion, AWS i4i instances).
