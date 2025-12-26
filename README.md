@@ -276,10 +276,11 @@ The engine runs on **any system** by emulating persistent memory with regular fi
 
 ##  Team
 
-**Author**: Ayesha Siddiqa (241419)
-**Co-author**: Hadia Naveed (241457)  
-**Institution**: Air University Islamabad, Department of Creative Technologies  
-**Year**: 2025-2026
+*Author*: Ayesha Siddiqa (241419)
+*Co-author*: Hadia Naveed (241457)  
+*Institution*: Air University Islamabad, Department of Creative Technologies  
+*Year*: 2025-2026
+
 ---
 ##  Contributing
 
