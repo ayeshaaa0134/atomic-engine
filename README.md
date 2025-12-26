@@ -6,17 +6,17 @@ A log-free, crash-consistent B+ Tree storage engine optimized for byte-addressab
 
 ---
 
-## 🎯 Key Features
+##  Key Features
 
-- **✅ Crash Consistency**: Survives power failures without corruption
-- **✅ 1x Write Amplification**: Unsorted leaf nodes eliminate redundant writes
-- **✅ Log-Free Design**: No write-ahead logging overhead
-- **✅ Byte-Addressable**: Optimized for CXL.mem and Intel Optane
-- **✅ Automatic Recovery**: Garbage collection cleans up crashed transactions
+- ** Crash Consistency**: Survives power failures without corruption
+- ** 1x Write Amplification**: Unsorted leaf nodes eliminate redundant writes
+- **Log-Free Design**: No write-ahead logging overhead
+- **Byte-Addressable**: Optimized for CXL.mem and Intel Optane
+- **Automatic Recovery**: Garbage collection cleans up crashed transactions
 
 ---
 
-## 📊 Performance Highlights
+## Performance Highlights
 
 | Metric | AtomicTree | SQLite | Improvement |
 |--------|-----------|--------|-------------|
@@ -26,7 +26,7 @@ A log-free, crash-consistent B+ Tree storage engine optimized for byte-addressab
 
 ---
 
-## 🏗️ Architecture
+##  Architecture
 
 ### Core Components
 
@@ -52,7 +52,7 @@ A log-free, crash-consistent B+ Tree storage engine optimized for byte-addressab
 
 ---
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Prerequisites
 
@@ -98,7 +98,7 @@ cmake --build . --config Release
 
 ---
 
-## 📖 Usage Example
+##  Usage Example
 
 ```cpp
 #include "manager.h"
@@ -141,7 +141,7 @@ int main() {
 
 ---
 
-## 🧪 Testing
+##  Testing
 
 ### Stress Test
 Tests insertion of 100k keys, random workload, GC, and crash recovery.
@@ -151,10 +151,10 @@ Tests insertion of 100k keys, random workload, GC, and crash recovery.
 ```
 
 **Test Coverage**:
-- ✅ Massive sequential insertions (100k ops)
-- ✅ Random workload (50k ops)
-- ✅ Garbage collection verification
-- ✅ Crash recovery simulation
+-  Massive sequential insertions (100k ops)
+-  Random workload (50k ops)
+-  Garbage collection verification
+-  Crash recovery simulation
 
 ### Speed Test
 Benchmarks AtomicTree vs SQLite vs in-memory baseline.
@@ -169,7 +169,7 @@ Benchmarks AtomicTree vs SQLite vs in-memory baseline.
 
 ---
 
-## 📂 Project Structure
+##  Project Structure
 
 ```
 AtomicTree/
@@ -195,7 +195,7 @@ AtomicTree/
 
 ---
 
-## 🔬 Technical Details
+##  Technical Details
 
 ### Atomic Split Algorithm
 
@@ -249,7 +249,7 @@ Based on **NV-Tree (FAST '15)** and **WORT (FAST '17)** papers:
 
 ---
 
-## 🛠️ Hardware Requirements
+## Hardware Requirements
 
 ### Development
 - Any modern CPU (Intel/AMD x86-64)
@@ -265,7 +265,7 @@ The engine runs on **any system** by emulating persistent memory with regular fi
 
 ---
 
-## 📚 References
+##  References
 
 1. **NV-Tree** (FAST '15): [Reducing consistency cost for NVM-based single level systems](https://www.usenix.org/conference/fast15/technical-sessions/presentation/yang)
 2. **WORT** (FAST '17): [Write optimal radix tree for persistent memory](https://www.usenix.org/conference/fast17/technical-sessions/presentation/lee-se-kwon)
@@ -274,38 +274,19 @@ The engine runs on **any system** by emulating persistent memory with regular fi
 
 ---
 
-## 👥 Team
+##  Team
 
-**Authors**: Ayesha Siddiqa (241419), Hadia Naveed (241457)  
+**Author**: Ayesha Siddiqa (241419)
+**Co-author**: Hadia Naveed (241457)  
 **Institution**: Air University Islamabad, Department of Creative Technologies  
-**Year**: 2024-2025
+**Year**: 2025-2026
 
 ---
-
-## 📄 License
-
-This is an academic project developed for research and educational purposes.
-
----
-
-## 🚧 Roadmap
-
-- [x] Core engine implementation
-- [x] Crash consistency guarantees
-- [x] Testing suite
-- [x] Benchmark suite
-- [ ] Frontend visualization dashboard
-- [ ] Multi-threaded support
-- [ ] Range scan optimization
-- [ ] Compression support
-
----
-
-## 🤝 Contributing
+##  Contributing
 
 This is a research prototype. For questions or collaboration:
 - Open an issue on GitHub
-- Contact the authors via institutional email
+- Contact the authors via git or institutional email
 
 ---
 
