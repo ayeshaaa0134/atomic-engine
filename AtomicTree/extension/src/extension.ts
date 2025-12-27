@@ -1,5 +1,86 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
+import * as os from 'os';
+import * as child_process from 'child_process';
+
+// System metrics tracking
+let previousCpuInfo: { idle: number, total: number } | null = null;
+
+async function getDiskInfo(): Promise<{ model: string, type: string }> {
+    return new Promise((resolve) => {
+        if (os.platform() !== 'win32') {
+            resolve({ model: 'Non-Windows', type: 'Generic' });
+            return;
+        }
+
+        const cmd = 'powershell -Command "Get-PhysicalDisk | Select-Object FriendlyName, MediaType | ConvertTo-Json"';
+        child_process.exec(cmd, (err, stdout) => {
+            if (err) {
+                resolve({ model: 'Unknown', type: 'Unknown' });
+                return;
+            }
+            try {
+                const data = JSON.parse(stdout);
+                if (Array.isArray(data)) {
+                    resolve({
+                        model: data[0].FriendlyName,
+                        type: data[0].MediaType === 4 ? 'SSD/NVM' : (data[0].MediaType === 3 ? 'HDD' : 'SSD')
+                    });
+                } else {
+                    resolve({
+                        model: data.FriendlyName,
+                        type: data.MediaType === 4 ? 'SSD/NVM' : (data.MediaType === 3 ? 'HDD' : 'SSD')
+                    });
+                }
+            } catch {
+                resolve({ model: 'Drive Detected', type: 'SSD' });
+            }
+        });
+    });
+}
+
+async function getSystemMetrics() {
+    const cpus = os.cpus();
+    const totalMemory = os.totalmem();
+    const freeMemory = os.freemem();
+    const platform = os.platform();
+    const arch = os.arch();
+    const diskInfo = await getDiskInfo();
+
+    // Calculate CPU usage
+    let cpuUsage = 0;
+    if (cpus.length > 0) {
+        let idle = 0;
+        let total = 0;
+        cpus.forEach(cpu => {
+            for (const type in cpu.times) {
+                total += (cpu.times as any)[type];
+            }
+            idle += cpu.times.idle;
+        });
+
+        if (previousCpuInfo) {
+            const idleDiff = idle - previousCpuInfo.idle;
+            const totalDiff = total - previousCpuInfo.total;
+            cpuUsage = 100 - (100 * idleDiff / totalDiff);
+        }
+
+        previousCpuInfo = { idle, total };
+    }
+
+    return {
+        cpuCores: cpus.length,
+        cpuModel: cpus[0]?.model || 'Unknown',
+        cpuUsage: Math.max(0, Math.min(100, cpuUsage)),
+        totalMemoryGB: (totalMemory / (1024 ** 3)).toFixed(2),
+        freeMemoryGB: (freeMemory / (1024 ** 3)).toFixed(2),
+        usedMemoryGB: ((totalMemory - freeMemory) / (1024 ** 3)).toFixed(2),
+        platform: platform,
+        arch: arch,
+        storageModel: diskInfo.model,
+        storageType: diskInfo.type
+    };
+}
 
 export function activate(context: vscode.ExtensionContext) {
     console.log('AtomicTree Extension Activated');
@@ -13,6 +94,22 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
         vscode.window.registerWebviewViewProvider('atomicTree.visualizer', vizProvider)
     );
+
+    // Broadcast system metrics periodically to both webviews
+    const metricsInterval = setInterval(() => {
+        const systemMetrics = getSystemMetrics();
+        controlsProvider.sendMessage({ command: 'systemStats', payload: systemMetrics });
+        vizProvider.sendMessage({ command: 'systemStats', payload: systemMetrics });
+    }, 2000); // Update every 2 seconds
+
+    context.subscriptions.push({ dispose: () => clearInterval(metricsInterval) });
+
+    // Send initial metrics immediately
+    setTimeout(() => {
+        const systemMetrics = getSystemMetrics();
+        controlsProvider.sendMessage({ command: 'systemStats', payload: systemMetrics });
+        vizProvider.sendMessage({ command: 'systemStats', payload: systemMetrics });
+    }, 500);
 
     // Register Task Provider
     context.subscriptions.push(

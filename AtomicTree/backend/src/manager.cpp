@@ -216,14 +216,18 @@ void Manager::print_telemetry(double ops_per_sec, double latency_us) {
   statex.dwLength = sizeof(statex);
   GlobalMemoryStatusEx(&statex);
 
+  // Calculate logical writes (approximate: ops * 16 bytes per operation)
+  std::uint64_t logical_writes = static_cast<std::uint64_t>(ops_per_sec * 16);
+
   // Metrics including physical write counter for Write Amplification
-  std::cout
-      << "{\"type\": \"metric\", \"ops\": " << ops_per_sec
-      << ", \"latency\": " << latency_us << ", \"mem_used\": " << rss
-      << ", \"physical_writes\": " << total_persisted_bytes
-      << ", \"allocated_blocks\": " << allocated_blocks_
-      << ", \"tree_type\": \"B+ Tree\", \"consistency\": \"Shadow Paging\""
-      << "}" << std::endl;
+  std::cout << "{\"type\": \"metric\", \"ops\": "
+            << static_cast<int>(ops_per_sec) << ", \"latency\": " << latency_us
+            << ", \"mem_used\": " << rss
+            << ", \"physical_writes\": " << total_persisted_bytes
+            << ", \"logical_writes\": " << logical_writes
+            << ", \"allocated_blocks\": " << allocated_blocks_
+            << ", \"treeType\": \"B+ Tree\", \"consistency\": \"Shadow Paging\""
+            << "}" << std::endl;
 
   // Send compressed bitmap (Hex) for visualizer - more professional and
   // efficient

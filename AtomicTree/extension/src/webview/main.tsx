@@ -25,8 +25,19 @@ const DashboardPanel = ({ mode }: any) => {
         physical_writes: 0,
         logical_writes: 0,
         allocated_blocks: 0,
-        treeType: 'B+ Tree',
-        consistency: 'Shadow Paging'
+        treeType: '',
+        consistency: ''
+    });
+    const [systemMetrics, setSystemMetrics] = useState({
+        cpuCores: 0,
+        cpuModel: '',
+        cpuUsage: 0,
+        totalMemoryGB: '0',
+        usedMemoryGB: '0',
+        platform: 'unknown',
+        arch: 'unknown',
+        storageModel: '',
+        storageType: ''
     });
     const [history, setHistory] = useState<number[]>(new Array(60).fill(0));
     const [logs, setLogs] = useState<any[]>([]);
@@ -41,18 +52,22 @@ const DashboardPanel = ({ mode }: any) => {
                 if (payload.type === 'metric') {
                     setStats(s => ({
                         ...s,
-                        ops: payload.ops,
-                        latency: payload.latency,
-                        physical_writes: payload.physical_writes,
-                        logical_writes: (payload.ops * 16), // Each op is ~16 bytes logical
-                        allocated_blocks: payload.allocated_blocks
+                        ops: payload.ops || 0,
+                        latency: payload.latency || 0,
+                        physical_writes: payload.physical_writes || 0,
+                        logical_writes: payload.logical_writes || 0,
+                        allocated_blocks: payload.allocated_blocks || 0,
+                        treeType: payload.treeType || s.treeType,
+                        consistency: payload.consistency || s.consistency
                     }));
-                    setHistory(h => [...h.slice(1), payload.ops]);
+                    setHistory(h => [...h.slice(1), payload.ops || 0]);
                 } else if (payload.type === 'bitmap') {
                     setBitmapHex(payload.data);
                 } else if (payload.type === 'log') {
                     setLogs(l => [{ time: new Date().toLocaleTimeString(), ...payload }, ...l.slice(0, 49)]);
                 }
+            } else if (message.command === 'systemStats') {
+                setSystemMetrics(message.payload);
             }
         };
 
@@ -65,7 +80,7 @@ const DashboardPanel = ({ mode }: any) => {
         return Math.max(1.0, stats.physical_writes / stats.logical_writes);
     }, [stats.physical_writes, stats.logical_writes]);
 
-    if (mode === 'controls') return <ControlsPanel isRunning={isRunning} setIsRunning={setIsRunning} />;
+    if (mode === 'controls') return <ControlsPanel isRunning={isRunning} setIsRunning={setIsRunning} systemMetrics={systemMetrics} />;
 
     return (
         <div className="flex col h-full bg-bg-color">
@@ -92,7 +107,7 @@ const DashboardPanel = ({ mode }: any) => {
 };
 
 // --- CONTROLS PANEL ---
-const ControlsPanel = ({ isRunning, setIsRunning }: any) => {
+const ControlsPanel = ({ isRunning, setIsRunning, systemMetrics }: any) => {
     const handleStart = () => {
         setIsRunning(true);
         vscode.postMessage({ command: 'runBenchmark' });
@@ -101,6 +116,13 @@ const ControlsPanel = ({ isRunning, setIsRunning }: any) => {
     const handleReset = () => {
         setIsRunning(false);
         vscode.postMessage({ command: 'reset' });
+    };
+
+    const getPlatformName = (platform: string) => {
+        if (platform === 'win32') return 'Windows';
+        if (platform === 'darwin') return 'macOS';
+        if (platform === 'linux') return 'Linux';
+        return platform;
     };
 
     return (
@@ -113,16 +135,49 @@ const ControlsPanel = ({ isRunning, setIsRunning }: any) => {
             </div>
             <VSCodeDivider />
 
+            <div className="control-group flex col gap-2 border-l-2" style={{ borderLeftColor: 'var(--chart-purple)' }}>
+                <label className="control-label">SYSTEM HARDWARE</label>
+                <div className="flex col gap-1">
+                    <div className="flex row justify-between text-[10px] opacity-60">
+                        <span>CPU</span>
+                        <span style={{ color: 'var(--chart-blue)' }}>{systemMetrics.cpuCores} Cores</span>
+                    </div>
+                    <div className="flex row justify-between text-[10px] opacity-60">
+                        <span>RAM</span>
+                        <span style={{ color: 'var(--chart-green)' }}>{systemMetrics.totalMemoryGB} GB</span>
+                    </div>
+                    <div className="flex row justify-between text-[10px] opacity-60">
+                        <span>Platform</span>
+                        <span>{getPlatformName(systemMetrics.platform)} ({systemMetrics.arch})</span>
+                    </div>
+                    <div className="flex row justify-between text-[10px] opacity-60">
+                        <span>CPU Usage</span>
+                        <span style={{ color: systemMetrics.cpuUsage > 70 ? 'var(--vscode-errorForeground)' : 'var(--chart-green)' }}>
+                            {systemMetrics.cpuUsage.toFixed(1)}%
+                        </span>
+                    </div>
+                    <div className="flex row justify-between text-[10px] opacity-60">
+                        <span>Storage</span>
+                        <span title={systemMetrics.storageModel}>{systemMetrics.storageType || 'Detecting...'}</span>
+                    </div>
+                    {systemMetrics.storageModel && (
+                        <div className="text-[9px] opacity-40 truncate">
+                            {systemMetrics.storageModel}
+                        </div>
+                    )}
+                </div>
+            </div>
+
             <div className="control-group flex col gap-2">
                 <label className="control-label">B+ TREE ARCHITECTURE</label>
                 <div className="flex col gap-1">
                     <div className="flex row justify-between text-[10px] opacity-60">
                         <span>Leaf Entry</span>
-                        <span>16 Bytes</span>
+                        <span>8 Bytes (Int/Int)</span>
                     </div>
                     <div className="flex row justify-between text-[10px] opacity-60">
                         <span>Consistency</span>
-                        <span style={{ color: 'var(--chart-green)' }}>Atomic Split</span>
+                        <span style={{ color: 'var(--chart-green)' }}>Shadow Paging</span>
                     </div>
                 </div>
             </div>
@@ -166,7 +221,7 @@ const LiveTelemetry = ({ stats, writeAmp, history, logs }: any) => (
             <div className="text-xs font-bold opacity-50 uppercase">Engine Log Stream</div>
             <div className="border rounded bg-vscode-editor-background h-48 overflow-y-auto flex col text-xs font-mono">
                 {logs.length === 0 ? (
-                    <div className="p-4 opacity-30 italic">Connect to NVM backend...</div>
+                    <div className="p-4 opacity-30 italic">Waiting for engine telemetry...</div>
                 ) : (
                     logs.map((log: any, i: number) => (
                         <LogRow key={i} time={log.time} type={log.level || 'INFO'} msg={log.message} />

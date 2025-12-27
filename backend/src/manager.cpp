@@ -37,14 +37,20 @@ Manager::Manager(const std::string &filename, std::size_t region_size,
     throw std::runtime_error("Failed to create/open file: " + filename);
   }
 
-  // Set file size if creating/expanding
+  // CRITICAL FIX: Must set file size before creating mapping
+  // SetFilePointer and SetEndOfFile are required to expand the file
   LARGE_INTEGER size_li;
   size_li.QuadPart = region_size;
-  // We strictly map the requested size.
-  // If opening existing, we assume it's large enough or we expand it?
-  // Let's set the size to ensure it works.
-  // But if it's OPEN_ALWAYS and exists, setting size might be optional but
-  // good. Wait, CreateFileMapping with size will expand it.
+  
+  if (!SetFilePointerEx(file_handle_, size_li, nullptr, FILE_BEGIN)) {
+    CloseHandle(file_handle_);
+    throw std::runtime_error("Failed to set file pointer");
+  }
+  
+  if (!SetEndOfFile(file_handle_)) {
+    CloseHandle(file_handle_);
+    throw std::runtime_error("Failed to set file size");
+  }
 
   map_handle_ = CreateFileMappingA(file_handle_, nullptr, PAGE_READWRITE,
                                    size_li.HighPart, size_li.LowPart, nullptr);
