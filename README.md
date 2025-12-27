@@ -111,7 +111,7 @@ int main() {
     // 1. Create persistent memory manager (1GB file)
     Manager manager("mydb.dat", 1024*1024*1024, 256, true);
     
-    // 2. Configure B-Tree
+    // 2. Configure B+ Tree
     BTreeConfig config;
     config.max_keys = 16;
     config.min_keys = 8;

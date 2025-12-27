@@ -12,7 +12,7 @@ Implemented fundamental operations for persistent memory in `primitives.cpp` usi
 - `atomic_pointer_swap`: Uses `InterlockedExchange64` for atomic 8-byte updates.
 
 ### 2. Shadow Paging & Atomic Split
-The B-Tree's structural modifications are now crash-safe:
+The B+ Tree's structural modifications are now crash-safe:
 - **Leaf Splits**: Implemented the Shadow Split pattern. A new sibling is allocated and populated, linked via the leaf chain (`Next` pointer), and persisted *before* the parent is updated.
 - **Internal Splits**: Similar shadow logic, returning the split key to the parent for an atomic pointer update.
 - **Persistence Guarantees**: Every write to node metadata (`key_count`) or entry data is explicitly flushed and fenced before subsequent operations dependent on that write.

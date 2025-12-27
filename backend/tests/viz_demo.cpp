@@ -5,7 +5,6 @@
 #include <thread>
 #include <vector>
 
-
 using namespace atomic_tree;
 
 // Helper to emit metrics for the VS Code Visualizer
@@ -29,7 +28,7 @@ int main() {
   // 64MB region, 256B blocks, create_new=true
   Manager manager("nvm.dat", 64 * 1024 * 1024, 256, true);
 
-  // 2. Configure and Initialize B-Tree
+  // 2. Configure and Initialize B+ Tree
   BTreeConfig config = {16, 8, 32}; // max_keys, min_keys, leaf_cap
   BTree tree(&manager, config);
 

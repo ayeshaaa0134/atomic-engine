@@ -12,11 +12,11 @@ class Manager;
  * On-disk/In-NVM Data Structures
  *
  * NV-Tree distinguishes between:
- * - Internal nodes: Sorted keys and child offsets (like standard B-tree)
+ * - Internal nodes: Sorted keys and child offsets (like standard B+ Tree)
  * - Leaf nodes: UNSORTED key-value pairs (append-only for efficiency)
  */
 
-// Configuration parameters for B-tree tuning
+// Configuration parameters for B+ Tree tuning
 struct BTreeConfig {
   int max_keys;      // Maximum keys per internal node
   int min_keys;      // Minimum keys per node (except root)
@@ -29,7 +29,7 @@ struct LeafEntry {
   int value;
 };
 
-// B-tree Node representation in NVM
+// B+ Tree Node representation in NVM
 // This structure is byte-addressable in persistent memory
 struct BTreeNode {
   // Metadata (8-byte aligned for atomic updates)
@@ -51,7 +51,7 @@ struct BTreeNode {
 };
 
 /**
- * B-Tree Index with Atomic Splits (NV-Tree + WORT)
+ * B+ Tree Index with Atomic Splits (NV-Tree + WORT)
  *
  * Core operations follow the pattern:
  * 1. Shadow Allocation: Create new node in NVM
@@ -66,7 +66,7 @@ struct BTreeNode {
  */
 class BTree {
 public:
-  // Initialize B-tree over persistent memory via manager
+  // Initialize B+ Tree over persistent memory via manager
   BTree(Manager *manager, const BTreeConfig &config);
 
   // Core API
