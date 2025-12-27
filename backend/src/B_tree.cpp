@@ -9,20 +9,26 @@
 namespace atomic_tree {
 
 // Helpers for Node Layout
-int *BTree::get_internal_keys(BTreeNode *node) { return &node->keys; }
-
-std::uint64_t *BTree::get_internal_children(BTreeNode *node, int max_keys) {
-  intptr_t keys_end =
-      reinterpret_cast<intptr_t>(&node->keys) + max_keys * sizeof(int);
-  keys_end = (keys_end + 7) & ~7;
-  return reinterpret_cast<std::uint64_t *>(keys_end);
+int *BTree::get_internal_keys(BTreeNode *node) {
+  return reinterpret_cast<int *>(node->data);
 }
 
-LeafEntry *BTree::get_leaf_entries(BTreeNode *node) { return &node->entries; }
+std::uint64_t *BTree::get_internal_children(BTreeNode *node, int max_keys) {
+  int *keys = get_internal_keys(node);
+  intptr_t children_start = reinterpret_cast<intptr_t>(keys + max_keys);
+  children_start = (children_start + 7) & ~7; // Align to 8 bytes
+  return reinterpret_cast<std::uint64_t *>(children_start);
+}
+
+LeafEntry *BTree::get_leaf_entries(BTreeNode *node) {
+  return reinterpret_cast<LeafEntry *>(node->data);
+}
 
 std::uint64_t *BTree::get_leaf_next(BTreeNode *node, int leaf_capacity) {
   LeafEntry *entries = get_leaf_entries(node);
-  return reinterpret_cast<std::uint64_t *>(entries + leaf_capacity);
+  intptr_t next_start = reinterpret_cast<intptr_t>(entries + leaf_capacity);
+  next_start = (next_start + 7) & ~7; // Align to 8 bytes
+  return reinterpret_cast<std::uint64_t *>(next_start);
 }
 
 BTree::BTree(Manager *manager, const BTreeConfig &config)

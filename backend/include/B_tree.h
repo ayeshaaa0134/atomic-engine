@@ -29,25 +29,16 @@ struct LeafEntry {
   int value;
 };
 
-// B+ Tree Node representation in NVM
-// This structure is byte-addressable in persistent memory
 struct BTreeNode {
   // Metadata (8-byte aligned for atomic updates)
   bool is_leaf;  // 1 byte
   int key_count; // 4 bytes: number of keys in this node
   int padding;   // 3 bytes: alignment to 8-byte boundary
 
-  // For internal nodes: sorted separator keys and child pointers (as offsets)
-  // NOTE Arrays are conceptually located here, but usually exceed the struct
-  // definition. In implementation, we might access these as dynamic arrays.
-  int keys;               // Separator keys (for internal nodes)
-  std::uint64_t children; // Child node offsets (as relative pointers)
-
-  // For leaf nodes: unsorted entries (append-only style from NV-Tree)
-  LeafEntry entries; // Key-value pairs (unsorted, append-only)
-
-  // Linked list of leaves for range scans (WORT idea)
-  std::uint64_t next_leaf; // Offset to next leaf node
+  // Body: Variable-sized data depending on is_leaf.
+  // We use byte-level offsets to access keys, children, and entries
+  // to support heterogeneous node sizes and professional memory safety.
+  char data[1]; // Flexible data start
 };
 
 /**

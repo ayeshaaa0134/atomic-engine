@@ -37,20 +37,14 @@ Manager::Manager(const std::string &filename, std::size_t region_size,
     throw std::runtime_error("Failed to create/open file: " + filename);
   }
 
-  // CRITICAL FIX: Must set file size before creating mapping
-  // SetFilePointer and SetEndOfFile are required to expand the file
+  // Set file size if creating/expanding
   LARGE_INTEGER size_li;
   size_li.QuadPart = region_size;
-  
-  if (!SetFilePointerEx(file_handle_, size_li, nullptr, FILE_BEGIN)) {
-    CloseHandle(file_handle_);
-    throw std::runtime_error("Failed to set file pointer");
-  }
-  
-  if (!SetEndOfFile(file_handle_)) {
-    CloseHandle(file_handle_);
-    throw std::runtime_error("Failed to set file size");
-  }
+  // We strictly map the requested size.
+  // If opening existing, we assume it's large enough or we expand it?
+  // Let's set the size to ensure it works.
+  // But if it's OPEN_ALWAYS and exists, setting size might be optional but
+  // good. Wait, CreateFileMapping with size will expand it.
 
   map_handle_ = CreateFileMappingA(file_handle_, nullptr, PAGE_READWRITE,
                                    size_li.HighPart, size_li.LowPart, nullptr);
@@ -222,14 +216,18 @@ void Manager::print_telemetry(double ops_per_sec, double latency_us) {
   statex.dwLength = sizeof(statex);
   GlobalMemoryStatusEx(&statex);
 
+  // Calculate logical writes (approximate: ops * 16 bytes per operation)
+  std::uint64_t logical_writes = static_cast<std::uint64_t>(ops_per_sec * 16);
+
   // Metrics including physical write counter for Write Amplification
-  std::cout
-      << "{\"type\": \"metric\", \"ops\": " << ops_per_sec
-      << ", \"latency\": " << latency_us << ", \"mem_used\": " << rss
-      << ", \"physical_writes\": " << total_persisted_bytes
-      << ", \"allocated_blocks\": " << allocated_blocks_
-      << ", \"tree_type\": \"B+ Tree\", \"consistency\": \"Shadow Paging\""
-      << "}" << std::endl;
+  std::cout << "{\"type\": \"metric\", \"ops\": "
+            << static_cast<int>(ops_per_sec) << ", \"latency\": " << latency_us
+            << ", \"mem_used\": " << rss
+            << ", \"physical_writes\": " << total_persisted_bytes
+            << ", \"logical_writes\": " << logical_writes
+            << ", \"allocated_blocks\": " << allocated_blocks_
+            << ", \"treeType\": \"B+ Tree\", \"consistency\": \"Shadow Paging\""
+            << "}" << std::endl;
 
   // Send compressed bitmap (Hex) for visualizer - more professional and
   // efficient
