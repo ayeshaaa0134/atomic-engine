@@ -26,7 +26,10 @@ const DashboardPanel = ({ mode }: any) => {
         logical_writes: 0,
         allocated_blocks: 0,
         treeType: '',
-        consistency: ''
+        consistency: '',
+        integrity: 'UNKNOWN',
+        region_kb: 0,
+        block_size: 0
     });
     const [systemMetrics, setSystemMetrics] = useState({
         cpuCores: 0,
@@ -58,7 +61,10 @@ const DashboardPanel = ({ mode }: any) => {
                         logical_writes: payload.logical_writes || 0,
                         allocated_blocks: payload.allocated_blocks || 0,
                         treeType: payload.treeType || s.treeType,
-                        consistency: payload.consistency || s.consistency
+                        consistency: payload.consistency || s.consistency,
+                        integrity: payload.integrity || s.integrity,
+                        region_kb: payload.region_kb || s.region_kb,
+                        block_size: payload.block_size || s.block_size
                     }));
                     setHistory(h => [...h.slice(1), payload.ops || 0]);
                 } else if (payload.type === 'bitmap') {
@@ -80,7 +86,7 @@ const DashboardPanel = ({ mode }: any) => {
         return Math.max(1.0, stats.physical_writes / stats.logical_writes);
     }, [stats.physical_writes, stats.logical_writes]);
 
-    if (mode === 'controls') return <ControlsPanel isRunning={isRunning} setIsRunning={setIsRunning} systemMetrics={systemMetrics} />;
+    if (mode === 'controls') return <ControlsPanel isRunning={isRunning} setIsRunning={setIsRunning} systemMetrics={systemMetrics} stats={stats} />;
 
     return (
         <div className="flex col h-full bg-bg-color">
@@ -107,7 +113,7 @@ const DashboardPanel = ({ mode }: any) => {
 };
 
 // --- CONTROLS PANEL ---
-const ControlsPanel = ({ isRunning, setIsRunning, systemMetrics }: any) => {
+const ControlsPanel = ({ isRunning, setIsRunning, systemMetrics, stats }: any) => {
     const handleStart = () => {
         setIsRunning(true);
         vscode.postMessage({ command: 'runBenchmark' });
@@ -169,34 +175,38 @@ const ControlsPanel = ({ isRunning, setIsRunning, systemMetrics }: any) => {
                 </div>
             </div>
 
-            <div className="control-group flex col gap-2">
-                <label className="control-label">B+ TREE ARCHITECTURE</label>
+            <div className="control-group flex col gap-2 border-l-2" style={{ borderLeftColor: 'var(--chart-blue)' }}>
+                <label className="control-label">NVM ENGINE CONFIG</label>
                 <div className="flex col gap-1">
                     <div className="flex row justify-between text-[10px] opacity-60">
-                        <span>Leaf Entry</span>
-                        <span>8 Bytes (Int/Int)</span>
+                        <span>Consistency</span>
+                        <span style={{ color: 'var(--chart-green)' }}>{stats.consistency || 'Shadow Paging'}</span>
                     </div>
                     <div className="flex row justify-between text-[10px] opacity-60">
-                        <span>Consistency</span>
-                        <span style={{ color: 'var(--chart-green)' }}>Shadow Paging</span>
+                        <span>Region Size</span>
+                        <span>{stats.region_kb > 0 ? `${(stats.region_kb / 1024).toFixed(0)} MB` : '32 MB'}</span>
+                    </div>
+                    <div className="flex row justify-between text-[10px] opacity-60">
+                        <span>Block Alignment</span>
+                        <span>{stats.block_size > 0 ? `${stats.block_size} B` : '128 B'}</span>
+                    </div>
+                    <div className="flex row justify-between text-[10px] opacity-60">
+                        <span>NVM Integrity</span>
+                        <span style={{ color: stats.integrity === 'PASSED' ? 'var(--chart-green)' : 'var(--chart-red)', fontWeight: 'bold' }}>
+                            {stats.integrity}
+                        </span>
                     </div>
                 </div>
             </div>
 
-            <div className="control-group flex col gap-2 border-l-2" style={{ borderLeftColor: 'var(--chart-blue)' }}>
-                <label className="control-label">PERSISTENCE MODEL</label>
-                <VSCodeCheckbox checked>Intel CLFLUSH/SFENCE</VSCodeCheckbox>
-                <VSCodeCheckbox checked>Shadow Paging (Log-Free)</VSCodeCheckbox>
+            <div className="mt-auto flex col gap-2">
+                <VSCodeButton appearance="primary" className="w-full" onClick={handleStart} disabled={isRunning}>
+                    RUN BENCHMARK
+                </VSCodeButton>
+                <VSCodeButton appearance="secondary" className="w-full" onClick={handleReset}>
+                    RESET ENGINE
+                </VSCodeButton>
             </div>
-
-            <div className="grow"></div>
-
-            <VSCodeButton appearance="primary" className="w-full" disabled={isRunning} onClick={handleStart}>
-                <span className="codicon codicon-play mr-2"></span> LAUNCH ENGINE
-            </VSCodeButton>
-            <VSCodeButton appearance="secondary" className="w-full" onClick={handleReset}>
-                WIPE NVM STATE
-            </VSCodeButton>
         </div>
     );
 };
