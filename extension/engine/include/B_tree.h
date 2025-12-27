@@ -78,6 +78,19 @@ public:
   std::uint64_t root_offset() const; // Get root for GC and recovery
   void print_tree() const;           // Debug: print tree structure
 
+  // Help to get children and keys based on node type
+  static int *get_internal_keys(BTreeNode *node);
+  static std::uint64_t *get_internal_children(BTreeNode *node, int max_keys);
+  static LeafEntry *get_leaf_entries(BTreeNode *node);
+  static std::uint64_t *get_leaf_next(BTreeNode *node, int leaf_capacity);
+
+  // Return type for internal splits
+  struct InsertResult {
+    int split_key;
+    std::uint64_t new_child_offset;
+    bool did_split;
+  };
+
 private:
   Manager *manager_;
   BTreeConfig config_;
@@ -87,26 +100,12 @@ private:
   BTreeNode *offset_to_node(std::uint64_t offset) const;
 
   // Internal recursive insertion with split detection
-  // Returns: (split_key, new_child_offset, did_split)
-  struct InsertResult {
-    int split_key;
-    std::uint64_t new_child_offset;
-    bool did_split;
-  };
-
   InsertResult insert_internal(std::uint64_t node_offset, int key, int value);
-
-  // Leaf-specific insertion (NV-Tree: unsorted append)
   InsertResult insert_leaf(std::uint64_t leaf_offset, int key, int value);
-
-  // Internal node insertion (NV-Tree: sorted keys)
   InsertResult insert_internal_node(std::uint64_t node_offset, int key,
                                     int value);
 
-  // Atomic split for leaf nodes (WORT: shadow + flush + fence + swap)
   InsertResult split_leaf(std::uint64_t old_leaf_offset);
-
-  // Atomic split for internal nodes
   InsertResult split_internal(std::uint64_t old_node_offset);
 
   // Search helper

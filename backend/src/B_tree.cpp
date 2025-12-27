@@ -247,6 +247,12 @@ BTree::InsertResult BTree::split_leaf(std::uint64_t old_leaf_offset) {
   old_leaf->key_count = mid;
   persist(old_leaf, manager_->block_size());
 
+  // Research Event: Log for visualizer
+  std::cout << "{\"type\": \"log\", \"level\": \"RESEARCH\", \"message\": "
+               "\"Shadow Split (NV-Tree): Leaf split at offset "
+            << old_leaf_offset << ", promoted key " << split_key << "\"}"
+            << std::endl;
+
   return {split_key, new_leaf_offset, true};
 }
 
@@ -292,6 +298,14 @@ BTree::InsertResult BTree::split_internal(std::uint64_t old_node_offset) {
   // child.
   old_node->key_count = mid;
   persist(&old_node->key_count, sizeof(int));
+  persist(new_node, manager_->block_size());
+  persist(old_node, manager_->block_size());
+
+  // Research Event: Log for visualizer
+  std::cout << "{\"type\": \"log\", \"level\": \"RESEARCH\", \"message\": "
+               "\"Shadow Split (WORT): Internal node split at offset "
+            << old_node_offset << ", promoted key " << split_key << "\"}"
+            << std::endl;
 
   return {split_key, new_node_offset, true};
 }

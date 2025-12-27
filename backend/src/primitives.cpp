@@ -4,9 +4,12 @@
 #include <windows.h>
 #endif
 
+std::uint64_t total_persisted_bytes = 0;
+
 namespace atomic_tree {
 
 void pmem_flush(void *addr, std::size_t len) {
+  total_persisted_bytes += len;
   char *ptr = (char *)((uintptr_t)addr & ~(uintptr_t)63);
   for (; ptr < (char *)addr + len; ptr += 64) {
     _mm_clflush(ptr);

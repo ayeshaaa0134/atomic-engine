@@ -23,6 +23,13 @@ Standardized the `GarbageCollector` to use the engine's centralized node layout 
 - **Recovery**: Automatically reclaims orphaned shadow nodes created during failed splits.
 - **Dynamic Configuration**: Now supports variable node capacities for flexible storage mapping.
 
+### 4. Live Visualizer & Research Dashboard
+Developed a "pro-grade" VS Code extension for real-time engine monitoring:
+- **Engine Cockpit**: One-click build and launch system for NVM benchmarks.
+- **Memory Map**: Real-time canvas-based visualization of NVM block allocation (First 1k blocks).
+- **Research metrics**: Live tracking of **Write Amplification** (Physical vs Logical writes) and **Consistency Model** status.
+- **Log Interception**: High-fidelity terminal data parsing for zero-latency metric updates.
+
 ## Verification Results
 
 ### Crash Consistency Verification

@@ -1,7 +1,10 @@
 #include "manager.h"
+#include "primitives.h"
 #include <cstring>
 #include <immintrin.h> // For _tzcnt_u64
+#include <iomanip>
 #include <iostream>
+#include <sstream>
 #include <stdexcept>
 
 #ifdef _WIN32
@@ -209,31 +212,31 @@ std::uint64_t *Manager::get_bitmap() { return bitmap_; }
 void Manager::print_telemetry(double ops_per_sec, double latency_us) {
   std::uint64_t rss = get_real_rss();
 
-  // Get total system memory (Real actual system info)
   MEMORYSTATUSEX statex;
   statex.dwLength = sizeof(statex);
   GlobalMemoryStatusEx(&statex);
 
-  // Output JSON to stdout - Extension will parse this
-  std::cout << "{\"type\": \"metric\", \"ops\": " << ops_per_sec
-            << ", \"latency\": " << latency_us << ", \"mem_used\": " << rss
-            << ", \"total_sys_mem\": " << statex.ullTotalPhys
-            << ", \"allocated_nodes\": " << (allocated_blocks_ * block_size_)
-            << "}" << std::endl;
+  // Metrics including physical write counter for Write Amplification
+  std::cout
+      << "{\"type\": \"metric\", \"ops\": " << ops_per_sec
+      << ", \"latency\": " << latency_us << ", \"mem_used\": " << rss
+      << ", \"physical_writes\": " << total_persisted_bytes
+      << ", \"allocated_blocks\": " << allocated_blocks_
+      << ", \"tree_type\": \"B+ Tree\", \"consistency\": \"Shadow Paging\""
+      << "}" << std::endl;
 
-  // Send memory map snapshot (Partial for performance)
-  std::cout << "{\"type\": \"memory\", \"blocks\": [";
-  for (std::size_t i = 0; i < std::min(block_count_, (std::size_t)600); ++i) {
-    std::size_t word_idx = i / 64;
-    std::size_t bit_idx = i % 64;
-    bool is_alloc = (bitmap_[word_idx] & (1ULL << bit_idx)) != 0;
-
-    std::cout << "{\"id\":" << i << ", \"type\":\""
-              << (is_alloc ? "allocated" : "free") << "\"}";
-    if (i < std::min(block_count_, (std::size_t)600) - 1)
-      std::cout << ",";
+  // Send compressed bitmap (Hex) for visualizer - more professional and
+  // efficient
+  std::stringstream ss;
+  ss << std::hex << std::setfill('0');
+  // Send first 1024 blocks (16 words of 64 bits)
+  for (std::size_t i = 0; i < std::min(bitmap_size_words_, (std::size_t)16);
+       ++i) {
+    ss << std::setw(16) << bitmap_[i];
   }
-  std::cout << "]}" << std::endl;
+
+  std::cout << "{\"type\": \"bitmap\", \"data\": \"" << ss.str()
+            << "\", \"offset\": 0}" << std::endl;
 }
 
 #include <psapi.h>
