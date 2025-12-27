@@ -2,13 +2,25 @@
   "name": "atomic-tree-engine",
   "displayName": "AtomicTree Engine",
   "description": "Visualizer and Benchmark Tool for AtomicTree NVM Storage",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "icon": "icon.png",
   "author": "Ayesha Siddiqa",
   "contributors": [
     "Hadia Naveed"
   ],
   "publisher": "ayesha-241419",
+  "categories": [
+    "Machine Learning",
+    "Visualization",
+    "Other"
+  ],
+  "keywords": [
+    "NVM",
+    "CXL",
+    "Storage",
+    "Benchmark",
+    "B+ Tree"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/ayeshaaa0134/atomic-engine"

@@ -21,14 +21,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     context.subscriptions.push(
         vscode.commands.registerCommand('atomicTree.startProfile', () => {
-            // Auto-detect running AtomicTree program from terminal
-            const terminal = vscode.window.activeTerminal || vscode.window.createTerminal('AtomicTree');
-
             controlsProvider.sendMessage({ command: 'start' });
-            vizProvider.sendMessage({ command: 'start' });
-            vscode.window.showInformationMessage('AtomicTree Profile Started - Extension listening for metrics');
-
-            // Start visualization
             vizProvider.sendMessage({ command: 'start' });
             vscode.window.showInformationMessage('AtomicTree Profile Started - Extension listening for metrics');
         }),
@@ -58,14 +51,16 @@ export function activate(context: vscode.ExtensionContext) {
                     const exePath = activeEditor.document.fileName.replace('.cpp', '.exe');
                     const terminal = vscode.window.activeTerminal || vscode.window.createTerminal('AtomicTree');
 
-                    // Hook into terminal data to parse JSON
-                    // Note: onDidWriteTerminalData is the correct API for intercepting terminal output
-                    const disposable = (vscode.window as any).onDidWriteTerminalData((e: any) => {
+                    // Hook into terminal data to parse JSON output
+                    // Using type assertion as onDidWriteTerminalData may not be in older VSCode API types
+                    const disposable = (vscode.window as any).onDidWriteTerminalData?.((e: any) => {
                         if (e.terminal === terminal) {
                             parseTerminalData(e.data, vizProvider);
                         }
                     });
-                    context.subscriptions.push(disposable);
+                    if (disposable) {
+                        context.subscriptions.push(disposable);
+                    }
 
                     terminal.show();
                     terminal.sendText(`& "${exePath}"`);
@@ -85,7 +80,15 @@ async function createBuildTask(context: vscode.ExtensionContext, fileUri: vscode
         file: fileUri.fsPath
     };
 
-    const commandLine = `g++ -fdiagnostics-color=always -g "${fileUri.fsPath}" "${srcPath}\\*.cpp" -I"${includePath}" -o "${fileUri.fsPath.replace('.cpp', '.exe')}"`;
+    // Get all cpp files in src directory
+    const cppFiles = [
+        path.join(srcPath, 'manager.cpp'),
+        path.join(srcPath, 'B_tree.cpp'),
+        path.join(srcPath, 'primitives.cpp'),
+        path.join(srcPath, 'garbage_collector.cpp')
+    ].map(f => `"${f}"`).join(' ');
+
+    const commandLine = `g++ -fdiagnostics-color=always -g "${fileUri.fsPath}" ${cppFiles} -I"${includePath}" -o "${fileUri.fsPath.replace('.cpp', '.exe')}"`;
 
     return new vscode.Task(
         definition,

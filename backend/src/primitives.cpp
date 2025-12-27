@@ -4,9 +4,9 @@
 #include <windows.h>
 #endif
 
-std::uint64_t total_persisted_bytes = 0;
-
 namespace atomic_tree {
+
+std::uint64_t total_persisted_bytes = 0;
 
 void pmem_flush(void *addr, std::size_t len) {
   total_persisted_bytes += len;
