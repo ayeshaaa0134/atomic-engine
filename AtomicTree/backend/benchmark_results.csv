@@ -1,0 +1,7 @@
+Engine,Throughput_ops_sec,Latency_ms,Write_Amplification
+AtomicTree,29555.6,0.0338346,1
+SQLite,4.2673e+06,11.717,262
+Volatile RAM,792067,0.00126252,0
+AtomicTree,15683.4,0.0637618,1
+SQLite,4.6503e+06,10.752,262
+Volatile RAM,819122,0.00122082,0
