@@ -3,7 +3,6 @@
 #include "manager.h"
 #include <iostream>
 
-
 int main() {
   std::cout << "AtomicTree Engine - CXL Storage Demo" << std::endl;
 
@@ -29,18 +28,34 @@ int main() {
     std::cout << "Root offset: " << tree.root_offset() << std::endl;
 
     // Simple Insert Test
-    std::cout << "Inserting 1000 keys..." << std::endl;
+    std::cout << "{\"type\": \"log\", \"level\": \"info\", \"message\": "
+                 "\"Inserting 1000 keys...\"}"
+              << std::endl;
     for (int i = 0; i < 1000; i++) {
+      auto start = std::chrono::high_resolution_clock::now();
       tree.insert(i, i * 10);
+      auto end = std::chrono::high_resolution_clock::now();
+
+      if (i % 50 == 0) {
+        double latency =
+            std::chrono::duration<double, std::micro>(end - start).count();
+        manager.print_telemetry(5000.0, latency); // 5k ops/sec nominal rate
+      }
     }
-    std::cout << "Insertion complete." << std::endl;
+    std::cout << "{\"type\": \"log\", \"level\": \"info\", \"message\": "
+                 "\"Insertion complete.\"}"
+              << std::endl;
 
     // Search Test
     int val;
     if (tree.search(500, val)) {
-      std::cout << "Found key 500: " << val << std::endl;
+      std::cout << "{\"type\": \"log\", \"level\": \"info\", \"message\": "
+                   "\"Found key 500: "
+                << val << "\"}" << std::endl;
     } else {
-      std::cout << "Key 500 NOT found!" << std::endl;
+      std::cout << "{\"type\": \"log\", \"level\": \"warn\", \"message\": "
+                   "\"Key 500 NOT found!\"}"
+                << std::endl;
     }
 
     // Garbage Collection Test (Manual Trigger)

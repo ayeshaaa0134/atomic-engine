@@ -9,7 +9,6 @@
 #include <random>
 #include <vector>
 
-
 using namespace atomic_tree;
 using namespace std::chrono;
 
@@ -101,7 +100,19 @@ BenchmarkResult benchmark_atomic_tree(const BenchmarkConfig &config) {
   for (int i = 0; i < config.num_operations; i++) {
     int key = config.use_random_keys ? key_dist(gen) : i;
     int value = key * 2;
+
+    auto op_start = high_resolution_clock::now();
     tree.insert(key, value);
+    auto op_end = high_resolution_clock::now();
+
+    if (i % 500 == 0) {
+      double op_latency =
+          duration_cast<microseconds>(op_end - op_start).count();
+      double current_throughput =
+          (i + 1) * 1000000.0 /
+          duration_cast<microseconds>(op_end - start).count();
+      manager.print_telemetry(current_throughput, op_latency);
+    }
   }
 
   auto end = high_resolution_clock::now();
