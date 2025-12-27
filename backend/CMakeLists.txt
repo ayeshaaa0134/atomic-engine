@@ -22,3 +22,5 @@ enable_testing()
 
 add_executable(stress_test tests/stress_test.cpp ${SOURCES})
 add_executable(speed_test tests/speed_test.cpp ${SOURCES})
+add_executable(crash_test tests/crash_consistency_test.cpp ${SOURCES})
+add_executable(viz_demo tests/viz_demo.cpp ${SOURCES})

@@ -1,7 +1,9 @@
 #include "B_tree.h"
 #include "garbage_collector.h"
 #include "manager.h"
+#include <chrono>
 #include <iostream>
+#include <thread>
 
 int main() {
   std::cout << "AtomicTree Engine - CXL Storage Demo" << std::endl;
@@ -24,6 +26,17 @@ int main() {
 
     std::cout << "Initializing B-Tree..." << std::endl;
     atomic_tree::BTree tree(&manager, config);
+
+    // Run GC on startup to clean up any orphaned shadow nodes from a previous
+    // crash
+    atomic_tree::GarbageCollector gc(&manager);
+    gc.collect(tree.root_offset(), config.max_keys, config.leaf_capacity);
+    if (gc.blocks_freed() > 0) {
+      std::cout << "{\"type\": \"log\", \"level\": \"warn\", \"message\": "
+                   "\"Recovered "
+                << gc.blocks_freed() << " dangling blocks from crash.\"}"
+                << std::endl;
+    }
 
     std::cout << "Root offset: " << tree.root_offset() << std::endl;
 
@@ -60,8 +73,7 @@ int main() {
 
     // Garbage Collection Test (Manual Trigger)
     std::cout << "Running Garbage Collector..." << std::endl;
-    atomic_tree::GarbageCollector gc(&manager);
-    gc.collect(tree.root_offset());
+    gc.collect(tree.root_offset(), config.max_keys, config.leaf_capacity);
     std::cout << "GC Done. Marked: " << gc.nodes_marked()
               << ", Freed: " << gc.blocks_freed() << std::endl;
 

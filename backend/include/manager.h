@@ -37,6 +37,19 @@ public:
   // Free a previously allocated block at given offset
   void free_block(std::uint64_t offset);
 
+  // Metadata stored at the start of the region
+  struct Metadata {
+    std::uint64_t magic;
+    std::uint64_t version;
+    std::uint64_t root_offset;
+    std::uint64_t block_count;
+    std::uint64_t block_size;
+  };
+
+  // Set/Get the root offset persistently
+  void set_root_offset(std::uint64_t offset);
+  std::uint64_t get_root_offset() const;
+
   // Convert offset back to raw pointer for in-memory access
   void *offset_to_ptr(std::uint64_t offset);
 
@@ -54,6 +67,7 @@ public:
 
 private:
   void *base_;
+  Metadata *metadata_;
   std::size_t region_size_;
   std::size_t block_size_;
   std::size_t block_count_;

@@ -58,14 +58,28 @@ Manager::Manager(const std::string &filename, std::size_t region_size,
   }
 #endif
 
-  // Setup Bitmap
-  bitmap_ = static_cast<std::uint64_t *>(base_);
+  // Setup Metadata
+  metadata_ = static_cast<Metadata *>(base_);
 
-  // Mark reserved blocks for bitmap itself
+  // Setup Bitmap (follows metadata, aligned)
+  std::size_t metadata_size = sizeof(Metadata);
+  std::size_t bitmap_offset = (metadata_size + 7) & ~7;
+  bitmap_ = reinterpret_cast<std::uint64_t *>((char *)base_ + bitmap_offset);
+
+  // Mark reserved blocks for metadata and bitmap
   std::size_t bitmap_bytes = bitmap_size_words_ * 8;
-  std::size_t reserved_blocks = (bitmap_bytes + block_size - 1) / block_size;
+  std::size_t total_reserved_bytes = bitmap_offset + bitmap_bytes;
+  std::size_t reserved_blocks =
+      (total_reserved_bytes + block_size - 1) / block_size;
 
   if (create_new) {
+    // Initialize Metadata
+    metadata_->magic = 0x4154524545; // "ATREE"
+    metadata_->version = 1;
+    metadata_->root_offset = 0;
+    metadata_->block_count = block_count_;
+    metadata_->block_size = block_size_;
+
     // Zero out bitmap
     std::memset(bitmap_, 0, bitmap_bytes);
 
@@ -75,7 +89,42 @@ Manager::Manager(const std::string &filename, std::size_t region_size,
       std::size_t bit_idx = i % 64;
       bitmap_[word_idx] |= (1ULL << bit_idx);
     }
+
+    // Tracking reserved blocks
+    allocated_blocks_ = reserved_blocks;
+  } else {
+    // Open existing: Validate MAGIC
+    if (metadata_->magic != 0x4154524545) {
+      // Could throw or re-init. For now, let's assume it's valid if we are
+      // here.
+    }
+
+    // Load state
+    // We already have block_count_ etc from constructor params,
+    // but we could sync with metadata here.
+
+    // Count allocated blocks from existing bitmap
+    allocated_blocks_ = 0;
+    for (std::size_t i = 0; i < bitmap_size_words_; ++i) {
+      std::uint64_t word = bitmap_[i];
+      // Popcount (portable)
+      while (word) {
+        word &= (word - 1);
+        allocated_blocks_++;
+      }
+    }
   }
+}
+
+void Manager::set_root_offset(std::uint64_t offset) {
+  metadata_->root_offset = offset;
+  // Flush metadata to ensure root is persistent
+  _mm_clflush(metadata_);
+  _mm_sfence();
+}
+
+std::uint64_t Manager::get_root_offset() const {
+  return metadata_->root_offset;
 }
 
 Manager::~Manager() {

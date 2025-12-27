@@ -7,7 +7,6 @@
 #include <random>
 #include <vector>
 
-
 using namespace atomic_tree;
 using namespace std::chrono;
 
@@ -178,7 +177,7 @@ void test_garbage_collection() {
 
   std::cout << "Running garbage collector..." << std::endl;
   GarbageCollector gc(&manager);
-  gc.collect(tree.root_offset());
+  gc.collect(tree.root_offset(), config.max_keys, config.leaf_capacity);
 
   std::cout << "✓ GC Complete:" << std::endl;
   std::cout << "  Nodes marked: " << gc.nodes_marked() << std::endl;
@@ -238,7 +237,7 @@ void test_crash_recovery() {
 
     std::cout << "Running GC for crash recovery..." << std::endl;
     GarbageCollector gc(&manager);
-    gc.collect(tree.root_offset());
+    gc.collect(tree.root_offset(), config.max_keys, config.leaf_capacity);
 
     std::cout << "  Leaked blocks recovered: " << gc.blocks_freed()
               << std::endl;
