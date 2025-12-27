@@ -43,7 +43,7 @@ const ControlsPanel = () => {
             <VSCodeDivider />
 
             <div className="control-group flex col gap-2">
-                <label className="control-label">B-TREE PARAMETERS</label>
+                <label className="control-label">B+ TREE PARAMETERS</label>
                 <div className="text-xs opacity-70 mb-1">Fanout & Leaf Capacity are handled in code via BTreeConfig.</div>
                 <div className="p-2 border rounded bg-vscode-editor-background opacity-80 text-xs font-mono">
                     max_keys: 16<br />

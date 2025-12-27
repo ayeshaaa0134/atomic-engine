@@ -25,7 +25,8 @@ class GarbageCollector {
 public:
   explicit GarbageCollector(Manager *manager);
 
-  // Run full GC starting from B-tree root
+  // Run full GC starting from B+ Tree
+  // root
   void collect(std::uint64_t root_offset, int max_keys, int leaf_capacity);
 
   // Statistics

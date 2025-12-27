@@ -24,7 +24,7 @@ int main() {
     config.min_keys = 8;
     config.leaf_capacity = 32;
 
-    std::cout << "Initializing B-Tree..." << std::endl;
+    std::cout << "Initializing B+ Tree..." << std::endl;
     atomic_tree::BTree tree(&manager, config);
 
     // Run GC on startup to clean up any orphaned shadow nodes from a previous
