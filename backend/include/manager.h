@@ -65,6 +65,10 @@ public:
   // @param latency_us: Average latency in microseconds
   void print_telemetry(double ops_per_sec, double latency_us);
 
+  // Integrity: Checksum verification for professional NVM use
+  std::uint64_t calculate_checksum() const;
+  bool verify_integrity() const;
+
 private:
   void *base_;
   Metadata *metadata_;

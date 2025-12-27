@@ -26,8 +26,12 @@ const DashboardPanel = ({ mode }: any) => {
         logical_writes: 0,
         allocated_blocks: 0,
         treeType: 'B+ Tree',
-        consistency: 'Shadow Paging'
+        consistency: 'Shadow Paging',
+        integrity: 'UNKNOWN',
+        region_kb: 0,
+        block_size: 0
     });
+    const [systemMetrics, setSystemMetrics] = useState<any>({});
     const [history, setHistory] = useState<number[]>(new Array(60).fill(0));
     const [logs, setLogs] = useState<any[]>([]);
     const [bitmapHex, setBitmapHex] = useState('');
@@ -44,8 +48,11 @@ const DashboardPanel = ({ mode }: any) => {
                         ops: payload.ops,
                         latency: payload.latency,
                         physical_writes: payload.physical_writes,
-                        logical_writes: (payload.ops * 16), // Each op is ~16 bytes logical
-                        allocated_blocks: payload.allocated_blocks
+                        logical_writes: payload.logical_writes || (payload.ops * 16),
+                        allocated_blocks: payload.allocated_blocks,
+                        integrity: payload.integrity || s.integrity,
+                        region_kb: payload.region_kb || s.region_kb,
+                        block_size: payload.block_size || s.block_size
                     }));
                     setHistory(h => [...h.slice(1), payload.ops]);
                 } else if (payload.type === 'bitmap') {
@@ -53,6 +60,8 @@ const DashboardPanel = ({ mode }: any) => {
                 } else if (payload.type === 'log') {
                     setLogs(l => [{ time: new Date().toLocaleTimeString(), ...payload }, ...l.slice(0, 49)]);
                 }
+            } else if (message.command === 'systemStats') {
+                setSystemMetrics(message.payload);
             }
         };
 
@@ -65,7 +74,7 @@ const DashboardPanel = ({ mode }: any) => {
         return Math.max(1.0, stats.physical_writes / stats.logical_writes);
     }, [stats.physical_writes, stats.logical_writes]);
 
-    if (mode === 'controls') return <ControlsPanel isRunning={isRunning} setIsRunning={setIsRunning} />;
+    if (mode === 'controls') return <ControlsPanel isRunning={isRunning} setIsRunning={setIsRunning} systemMetrics={systemMetrics} stats={stats} />;
 
     return (
         <div className="flex col h-full bg-bg-color">
@@ -92,7 +101,7 @@ const DashboardPanel = ({ mode }: any) => {
 };
 
 // --- CONTROLS PANEL ---
-const ControlsPanel = ({ isRunning, setIsRunning }: any) => {
+const ControlsPanel = ({ isRunning, setIsRunning, systemMetrics, stats }: any) => {
     const handleStart = () => {
         setIsRunning(true);
         vscode.postMessage({ command: 'runBenchmark' });
@@ -104,43 +113,81 @@ const ControlsPanel = ({ isRunning, setIsRunning }: any) => {
     };
 
     return (
-        <div className="flex col gap-4 p-4 h-full glass">
+        <div className="flex col gap-4 p-4 h-full glass overflow-y-auto">
             <div className="flex row items-center gap-2">
                 <div className={isRunning ? "spinner" : "status-dot"}></div>
                 <h2 className="text-sm font-bold uppercase tracking-wide">
-                    {isRunning ? "Engine: Running" : "Engine: Standby"}
+                    {isRunning ? "Engine: Active" : "Engine: Idle"}
                 </h2>
             </div>
-            <VSCodeDivider />
 
-            <div className="control-group flex col gap-2">
-                <label className="control-label">B+ TREE ARCHITECTURE</label>
+            <div className="system-specs flex col gap-3 p-3 bg-white/5 rounded border border-white/10">
+                <div className="flex row justify-between items-center text-[10px] uppercase opacity-50 font-bold">
+                    <span>Host Environment</span>
+                    <VSCodeBadge>{systemMetrics.storageType || 'Detecting...'}</VSBadge>
+                </div>
+
+                <div className="flex col gap-2">
+                    <div className="flex col">
+                        <div className="flex row justify-between text-[11px] mb-1">
+                            <span>CPU ({systemMetrics.cpuCores} Cores)</span>
+                            <span className="font-mono">{systemMetrics.cpuUsage?.toFixed(1)}%</span>
+                        </div>
+                        <div className="usage-bar-bg h-1.5 w-full bg-black/20 rounded-full overflow-hidden">
+                            <div className="h-full bg-chart-blue" style={{ width: `${systemMetrics.cpuUsage}%`, transition: 'width 0.5s ease' }}></div>
+                        </div>
+                    </div>
+
+                    <div className="flex col">
+                        <div className="flex row justify-between text-[11px] mb-1">
+                            <span>Memory ({systemMetrics.totalMemoryGB} GB)</span>
+                            <span className="font-mono">{((parseFloat(systemMetrics.usedMemoryGB) / parseFloat(systemMetrics.totalMemoryGB)) * 100).toFixed(1)}%</span>
+                        </div>
+                        <div className="usage-bar-bg h-1.5 w-full bg-black/20 rounded-full overflow-hidden">
+                            <div className="h-full bg-chart-green" style={{ width: `${(parseFloat(systemMetrics.usedMemoryGB) / parseFloat(systemMetrics.totalMemoryGB)) * 100}%`, transition: 'width 0.5s ease' }}></div>
+                        </div>
+                    </div>
+                </div>
+
+                {systemMetrics.storageModel && (
+                    <div className="text-[9px] opacity-40 truncate font-mono mt-1 bg-black/20 p-1 rounded">
+                        {systemMetrics.storageModel}
+                    </div>
+                )}
+            </div>
+
+            <div className="control-group flex col gap-2 border-l-2" style={{ borderLeftColor: 'var(--chart-blue)' }}>
+                <label className="control-label">NVM ENGINE CONFIG</label>
                 <div className="flex col gap-1">
                     <div className="flex row justify-between text-[10px] opacity-60">
-                        <span>Leaf Entry</span>
-                        <span>16 Bytes</span>
+                        <span>Consistency</span>
+                        <span style={{ color: 'var(--chart-green)' }}>{stats.consistency || 'Shadow Paging'}</span>
                     </div>
                     <div className="flex row justify-between text-[10px] opacity-60">
-                        <span>Consistency</span>
-                        <span style={{ color: 'var(--chart-green)' }}>Atomic Split</span>
+                        <span>Region Size</span>
+                        <span>{stats.region_kb > 0 ? `${(stats.region_kb / 1024).toFixed(0)} MB` : '32 MB'}</span>
+                    </div>
+                    <div className="flex row justify-between text-[10px] opacity-60">
+                        <span>Block Alignment</span>
+                        <span>{stats.block_size > 0 ? `${stats.block_size} B` : '128 B'}</span>
+                    </div>
+                    <div className="flex row justify-between text-[10px] opacity-60">
+                        <span>NVM Integrity</span>
+                        <span style={{ color: stats.integrity === 'PASSED' ? 'var(--chart-green)' : 'var(--chart-red)', fontWeight: 'bold' }}>
+                            {stats.integrity}
+                        </span>
                     </div>
                 </div>
             </div>
 
-            <div className="control-group flex col gap-2 border-l-2" style={{ borderLeftColor: 'var(--chart-blue)' }}>
-                <label className="control-label">PERSISTENCE MODEL</label>
-                <VSCodeCheckbox checked>Intel CLFLUSH/SFENCE</VSCodeCheckbox>
-                <VSCodeCheckbox checked>Shadow Paging (Log-Free)</VSCodeCheckbox>
+            <div className="mt-auto flex col gap-2">
+                <VSCodeButton appearance="primary" className="w-full" onClick={handleStart} disabled={isRunning}>
+                    RUN BENCHMARK
+                </VSCodeButton>
+                <VSCodeButton appearance="secondary" className="w-full" onClick={handleReset}>
+                    RESET ENGINE
+                </VSCodeButton>
             </div>
-
-            <div className="grow"></div>
-
-            <VSCodeButton appearance="primary" className="w-full" disabled={isRunning} onClick={handleStart}>
-                <span className="codicon codicon-play mr-2"></span> LAUNCH ENGINE
-            </VSCodeButton>
-            <VSCodeButton appearance="secondary" className="w-full" onClick={handleReset}>
-                WIPE NVM STATE
-            </VSCodeButton>
         </div>
     );
 };
