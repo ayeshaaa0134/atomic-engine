@@ -1,38 +1,38 @@
 :root {
-    --bg-color: var(--vscode-editor-background);
-    --text-color: var(--vscode-foreground);
-    --border-color: var(--vscode-widget-border);
-    --accent-color: var(--vscode-button-background);
-    --grid-line: rgba(128, 128, 128, 0.2);
-    --chart-blue: #3794ff;
-    --chart-green: #29b6f6;
-    --chart-red: #f14c4c;
-    --chart-purple: #c586c0;
-    --font-mono: 'SF Mono', Monaco, Menlo, Consolas, 'Ubuntu Mono', 'Liberation Mono', 'DejaVu Sans Mono', 'Courier New', monospace;
+    --bg-color: #0d1117;
+    --card-bg: rgba(22, 27, 34, 0.6);
+    --text-color: #c9d1d9;
+    --text-muted: #8b949e;
+    --border-color: rgba(48, 54, 61, 0.8);
+    --accent-color: #58a6ff;
+    --chart-blue: #388bfd;
+    --chart-green: #3fb950;
+    --chart-red: #f85149;
+    --chart-purple: #bc8cff;
+    --chart-orange: #d29922;
+    --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
     --glass-bg: rgba(255, 255, 255, 0.03);
-    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.08);
 }
 
 .glass {
     background: var(--glass-bg);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--glass-border);
-    border-radius: 8px;
-}
-
-.bg-chart-purple {
-    background: var(--chart-purple);
+    border-radius: 12px;
+    box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.2);
 }
 
 body {
     padding: 0;
     margin: 0;
-    font-family: var(--vscode-font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
     font-size: 13px;
     background-color: var(--bg-color);
     color: var(--text-color);
     overflow: hidden;
-    /* App-like feel */
+    line-height: 1.5;
 }
 
 /* === UTILITIES === */
@@ -143,145 +143,208 @@ body {
 
 /* === COMPONENTS === */
 .tab-bar {
-    background: var(--vscode-editorGroupHeader-tabsBackground);
+    background: #161b22;
     display: flex;
     user-select: none;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .tab {
-    padding: 8px 12px;
+    padding: 10px 16px;
     cursor: pointer;
-    border-right: 1px solid var(--border-color);
     background: transparent;
-    opacity: 0.7;
-    transition: all 0.2s;
+    color: var(--text-muted);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     font-size: 11px;
-    font-weight: 500;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    position: relative;
+    border-top: 2px solid transparent;
 }
 
 .tab:hover {
-    background: var(--vscode-list-hoverBackground);
-    opacity: 1;
+    color: var(--text-color);
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .tab.active {
-    background: var(--bg-color);
+    color: var(--accent-color);
+    background: #0d1117;
     border-top: 2px solid var(--accent-color);
-    opacity: 1;
-    font-weight: 600;
 }
 
 .metric-card {
-    background: var(--vscode-editor-widget-background);
-    padding: 12px;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: var(--card-bg);
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
     position: relative;
     overflow: hidden;
-    transition: transform 0.1s;
+    transition: all 0.3s ease;
 }
 
 .metric-card:hover {
-    transform: translateY(-1px);
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0, 0, 10, 0.3);
 }
 
 .chart-container {
-    background: var(--bg-color);
+    background: var(--card-bg);
     border: 1px solid var(--border-color);
-    border-radius: 4px;
+    border-radius: 12px;
     position: relative;
     overflow: hidden;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
+/* --- USAGE BAR --- */
+.usage-bar-bg {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 4px;
+}
+
+.usage-bar-fill {
+    height: 100%;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1), background 0.5s;
+}
+
+/* --- LOG STREAM --- */
 .log-entry {
     font-family: var(--font-mono);
     font-size: 11px;
-    padding: 2px 4px;
+    padding: 6px 10px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: flex-start;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .log-entry:hover {
-    background: var(--vscode-list-hoverBackground);
+    background: rgba(255, 255, 255, 0.03);
 }
 
 .log-time {
-    color: var(--vscode-descriptionForeground);
-    margin-right: 8px;
+    color: var(--text-muted);
+    width: 65px;
+    flex-shrink: 0;
+    font-size: 10px;
+}
+
+.log-type {
+    width: 75px;
+    flex-shrink: 0;
+    font-weight: 800;
+    font-size: 10px;
+    letter-spacing: 0.5px;
 }
 
 .log-info {
     color: var(--chart-blue);
 }
 
-.log-error {
-    color: var(--chart-red);
-    font-weight: bold;
-}
-
-.log-warn {
+.log-success {
     color: var(--chart-green);
 }
 
-/* === HEATMAP === */
-canvas {
-    image-rendering: pixelated;
+.log-research {
+    color: var(--chart-purple);
 }
 
-/* === LOADING SPINNER === */
-.spinner {
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--border-color);
-    border-top-color: var(--accent-color);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
+.log-error {
+    color: var(--chart-red);
 }
 
-.status-dot {
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--border-color);
-    border-radius: 50%;
-    background: transparent;
+.log-warn {
+    color: var(--chart-orange);
 }
 
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
+.log-msg {
+    color: #e6edf3;
+    word-break: break-word;
 }
 
 /* === SIDEBAR CONTROLS === */
 .control-group {
-    background: var(--vscode-sideBar-background);
+    background: var(--card-bg);
     border: 1px solid var(--border-color);
-    padding: 10px;
-    border-radius: 4px;
+    padding: 14px;
+    border-radius: 12px;
+    margin-bottom: 12px;
 }
 
 .control-label {
     display: block;
-    margin-bottom: 4px;
-    font-size: 11px;
-    font-weight: 600;
-    opacity: 0.8;
+    margin-bottom: 8px;
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-/* === SCROLLBARS === */
-::-webkit-scrollbar {
+.status-dot {
     width: 8px;
     height: 8px;
+    border-radius: 50%;
+    background: var(--text-muted);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
 }
 
-::-webkit-scrollbar-corner {
+.status-dot.active {
+    background: var(--chart-green);
+    box-shadow: 0 0 10px var(--chart-green);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.2);
+        opacity: 0.7;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* SCROLLBARS */
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+::-webkit-scrollbar-track {
     background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgba(121, 121, 121, 0.4);
-    border-radius: 4px;
+    background: #30363d;
+    border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(100, 100, 100, 0.7);
+    background: #484f58;
 }

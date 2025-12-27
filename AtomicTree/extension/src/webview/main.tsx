@@ -137,31 +137,32 @@ const ControlsPanel = ({ isRunning, setIsRunning, systemMetrics }: any) => {
 
             <div className="control-group flex col gap-2 border-l-2" style={{ borderLeftColor: 'var(--chart-purple)' }}>
                 <label className="control-label">SYSTEM HARDWARE</label>
-                <div className="flex col gap-1">
-                    <div className="flex row justify-between text-[10px] opacity-60">
-                        <span>CPU</span>
+                <div className="flex col gap-2">
+                    <div className="flex row justify-between text-[10px] uppercase font-extrabold tracking-tight">
+                        <span className="opacity-50">CPU Information</span>
                         <span style={{ color: 'var(--chart-blue)' }}>{systemMetrics.cpuCores} Cores</span>
                     </div>
-                    <div className="flex row justify-between text-[10px] opacity-60">
-                        <span>RAM</span>
-                        <span style={{ color: 'var(--chart-green)' }}>{systemMetrics.totalMemoryGB} GB</span>
+                    <div className="usage-bar-bg">
+                        <div className="usage-bar-fill" style={{ width: `${systemMetrics.cpuUsage}%`, background: systemMetrics.cpuUsage > 80 ? 'var(--chart-red)' : 'var(--chart-blue)' }}></div>
                     </div>
-                    <div className="flex row justify-between text-[10px] opacity-60">
+                    <div className="mt-2 flex row justify-between text-[10px] uppercase font-extrabold tracking-tight">
+                        <span className="opacity-50">RAM: {systemMetrics.usedMemoryGB} / {systemMetrics.totalMemoryGB} GB</span>
+                        <span style={{ color: 'var(--chart-green)' }}>{Math.round((parseFloat(systemMetrics.usedMemoryGB) / parseFloat(systemMetrics.totalMemoryGB)) * 100)}%</span>
+                    </div>
+                    <div className="usage-bar-bg">
+                        <div className="usage-bar-fill" style={{ width: `${(parseFloat(systemMetrics.usedMemoryGB) / parseFloat(systemMetrics.totalMemoryGB)) * 100}%`, background: 'var(--chart-green)' }}></div>
+                    </div>
+
+                    <div className="flex row justify-between text-[10px] opacity-60 mt-2">
                         <span>Platform</span>
-                        <span>{getPlatformName(systemMetrics.platform)} ({systemMetrics.arch})</span>
+                        <span className="font-mono">{getPlatformName(systemMetrics.platform)} ({systemMetrics.arch})</span>
                     </div>
                     <div className="flex row justify-between text-[10px] opacity-60">
-                        <span>CPU Usage</span>
-                        <span style={{ color: systemMetrics.cpuUsage > 70 ? 'var(--vscode-errorForeground)' : 'var(--chart-green)' }}>
-                            {systemMetrics.cpuUsage.toFixed(1)}%
-                        </span>
-                    </div>
-                    <div className="flex row justify-between text-[10px] opacity-60">
-                        <span>Storage</span>
-                        <span title={systemMetrics.storageModel}>{systemMetrics.storageType || 'Detecting...'}</span>
+                        <span>Storage Engine</span>
+                        <span title={systemMetrics.storageModel} style={{ color: 'var(--chart-orange)' }}>{systemMetrics.storageType || 'Detecting...'}</span>
                     </div>
                     {systemMetrics.storageModel && (
-                        <div className="text-[9px] opacity-40 truncate">
+                        <div className="text-[9px] opacity-40 truncate font-mono mt-1 bg-black/20 p-1 rounded">
                             {systemMetrics.storageModel}
                         </div>
                     )}
@@ -335,10 +336,12 @@ const MetricCard = ({ label, value, unit, color }: any) => (
 );
 
 const LogRow = ({ time, type, msg }: any) => (
-    <div className="log-entry flex row border-b border-vscode-widget-border py-1 px-2">
-        <span className="opacity-40 w-16 shrink-0">{time}</span>
-        <span className={`log-${type.toLowerCase()} w-10 shrink-0 font-bold`}>{type}</span>
-        <span className="opacity-80 ml-2">{msg}</span>
+    <div className="log-entry">
+        <span className="log-time">{time}</span>
+        <span className={`log-type log-${type.toLowerCase()}`}>
+            [{type}]
+        </span>
+        <span className="log-msg">{msg}</span>
     </div>
 );
 
