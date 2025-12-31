@@ -17,7 +17,8 @@
 					"targetIndexes" : 
 					[
 						0,
-						1
+						1,
+						2
 					]
 				}
 			],
@@ -33,7 +34,8 @@
 					"targetIndexes" : 
 					[
 						0,
-						1
+						1,
+						2
 					]
 				}
 			],
@@ -42,15 +44,22 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "atomic-engine::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-atomic-engine-Debug-c6c39e6c67d7cd6d57f0.json",
+					"jsonFile" : "target-atomic-engine-Debug-a73d9aa429acd8529ccf.json",
 					"name" : "atomic-engine",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "atomic-tests::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-atomic-tests-Debug-a9feb9e1eed0d10f1f91.json",
+					"jsonFile" : "target-atomic-tests-Debug-743baa9adb63261b5445.json",
 					"name" : "atomic-tests",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "example-code::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-example-code-Debug-8db40c66d79edc81144b.json",
+					"name" : "example-code",
 					"projectIndex" : 0
 				}
 			]

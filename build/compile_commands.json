@@ -58,5 +58,11 @@
   "command": "C:\\mingw64\\bin\\g++.exe -D_WIN32 @CMakeFiles/atomic-tests.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\atomic-tests.dir\\src\\wort.cpp.obj -c D:\\DSA-Project\\backend\\src\\wort.cpp",
   "file": "D:/DSA-Project/backend/src/wort.cpp",
   "output": "CMakeFiles/atomic-tests.dir/src/wort.cpp.obj"
+},
+{
+  "directory": "D:/DSA-Project/build",
+  "command": "C:\\mingw64\\bin\\g++.exe -D_WIN32 @CMakeFiles/example-code.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\example-code.dir\\D_\\DSA-Project\\examples\\my_custom_code.cpp.obj -c D:\\DSA-Project\\examples\\my_custom_code.cpp",
+  "file": "D:/DSA-Project/examples/my_custom_code.cpp",
+  "output": "CMakeFiles/example-code.dir/D_/DSA-Project/examples/my_custom_code.cpp.obj"
 }
 ]

@@ -5,4 +5,4 @@
 # This file includes the relevant testing commands required for 
 # testing this directory and lists subdirectories to be tested as well.
 add_test(StressTest "D:/DSA-Project/build/atomic-tests.exe")
-set_tests_properties(StressTest PROPERTIES  _BACKTRACE_TRIPLES "D:/DSA-Project/backend/CMakeLists.txt;32;add_test;D:/DSA-Project/backend/CMakeLists.txt;0;")
+set_tests_properties(StressTest PROPERTIES  _BACKTRACE_TRIPLES "D:/DSA-Project/backend/CMakeLists.txt;37;add_test;D:/DSA-Project/backend/CMakeLists.txt;0;")

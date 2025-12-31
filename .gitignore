@@ -1,7 +1,11 @@
 node_modules/
 pmem.dat
+pmem_stress.dat
+*.dat
 *.exe
 *.vsix
 .vscode/
 dist/
 out/
+build/
+backend/build/

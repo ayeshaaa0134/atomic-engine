@@ -30,7 +30,7 @@ add_executable(atomic-tests tests/stress_test.cpp src/b_tree.cpp src/allocator.c
 target_link_libraries(atomic-tests PRIVATE ${OS_LIBS})
 
 # Example Code (for IntelliSense and build check)
-add_executable(example-code ../examples/my_custom_code.cpp)
+add_executable(example-code ${CMAKE_SOURCE_DIR}/../examples/my_custom_code.cpp)
 target_link_libraries(example-code PRIVATE ${OS_LIBS})
 
 enable_testing()

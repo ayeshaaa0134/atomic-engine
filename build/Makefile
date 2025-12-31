@@ -151,6 +151,43 @@ atomic-tests/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\atomic-tests.dir\build.make CMakeFiles/atomic-tests.dir/build
 .PHONY : atomic-tests/fast
 
+#=============================================================================
+# Target rules for targets named example-code
+
+# Build rule for target.
+example-code: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 example-code
+.PHONY : example-code
+
+# fast build rule for target.
+example-code/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\example-code.dir\build.make CMakeFiles/example-code.dir/build
+.PHONY : example-code/fast
+
+D_/DSA-Project/examples/my_custom_code.obj: D_/DSA-Project/examples/my_custom_code.cpp.obj
+.PHONY : D_/DSA-Project/examples/my_custom_code.obj
+
+# target to build an object file
+D_/DSA-Project/examples/my_custom_code.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\example-code.dir\build.make CMakeFiles/example-code.dir/D_/DSA-Project/examples/my_custom_code.cpp.obj
+.PHONY : D_/DSA-Project/examples/my_custom_code.cpp.obj
+
+D_/DSA-Project/examples/my_custom_code.i: D_/DSA-Project/examples/my_custom_code.cpp.i
+.PHONY : D_/DSA-Project/examples/my_custom_code.i
+
+# target to preprocess a source file
+D_/DSA-Project/examples/my_custom_code.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\example-code.dir\build.make CMakeFiles/example-code.dir/D_/DSA-Project/examples/my_custom_code.cpp.i
+.PHONY : D_/DSA-Project/examples/my_custom_code.cpp.i
+
+D_/DSA-Project/examples/my_custom_code.s: D_/DSA-Project/examples/my_custom_code.cpp.s
+.PHONY : D_/DSA-Project/examples/my_custom_code.s
+
+# target to generate assembly for a file
+D_/DSA-Project/examples/my_custom_code.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\example-code.dir\build.make CMakeFiles/example-code.dir/D_/DSA-Project/examples/my_custom_code.cpp.s
+.PHONY : D_/DSA-Project/examples/my_custom_code.cpp.s
+
 src/allocator.obj: src/allocator.cpp.obj
 .PHONY : src/allocator.obj
 
@@ -318,6 +355,10 @@ help:
 	@echo ... test
 	@echo ... atomic-engine
 	@echo ... atomic-tests
+	@echo ... example-code
+	@echo ... D_/DSA-Project/examples/my_custom_code.obj
+	@echo ... D_/DSA-Project/examples/my_custom_code.i
+	@echo ... D_/DSA-Project/examples/my_custom_code.s
 	@echo ... src/allocator.obj
 	@echo ... src/allocator.i
 	@echo ... src/allocator.s
