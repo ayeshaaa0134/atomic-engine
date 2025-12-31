@@ -10,7 +10,11 @@ export function activate(context: vscode.ExtensionContext) {
     // 1. Register Views
     const provider = new AtomicTreeWebviewProvider(context.extensionUri);
     context.subscriptions.push(
-        vscode.window.registerWebviewViewProvider('atomic-tree-dashboard', provider)
+        vscode.window.registerWebviewViewProvider('atomic-tree-dashboard', provider),
+        vscode.window.registerWebviewViewProvider('atomic-tree-explorer', provider),
+        vscode.window.registerWebviewViewProvider('atomic-tree-memory', provider),
+        vscode.window.registerWebviewViewProvider('atomic-tree-radar', provider),
+        vscode.window.registerWebviewViewProvider('atomic-tree-crashes', provider)
     );
 
     // 2. Register Commands
