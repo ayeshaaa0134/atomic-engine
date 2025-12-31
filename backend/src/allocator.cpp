@@ -3,7 +3,6 @@
 #include <iostream>
 #include <windows.h>
 
-
 Allocator::Allocator(const std::string &filename) : used_blocks_count(0) {
   total_blocks = POOL_SIZE / BLOCK_SIZE;
 
@@ -39,6 +38,10 @@ Allocator::Allocator(const std::string &filename) : used_blocks_count(0) {
   uint64_t bitmap_size = total_blocks / 8;
   bitmap_addr = malloc(bitmap_size);
   memset(bitmap_addr, 0, bitmap_size);
+
+  // Reserve Block 0 (so we never return offset 0, which get_abs_addr treats as
+  // nullptr)
+  set_bit(0);
 }
 
 Allocator::~Allocator() {

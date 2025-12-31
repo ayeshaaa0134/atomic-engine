@@ -25,5 +25,8 @@ add_executable(atomic-engine ${SOURCES})
 target_link_libraries(atomic-engine PRIVATE ${OS_LIBS})
 
 # Test Executable
-add_executable(atomic-tests tests/stress_test.cpp src/b_tree.cpp src/allocator.cpp src/primitives.cpp src/manager.cpp)
+add_executable(atomic-tests tests/stress_test.cpp src/b_tree.cpp src/allocator.cpp src/primitives.cpp src/wort.cpp)
 target_link_libraries(atomic-tests PRIVATE ${OS_LIBS})
+
+enable_testing()
+add_test(NAME StressTest COMMAND atomic-tests)

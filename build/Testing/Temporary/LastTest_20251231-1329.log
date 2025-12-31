@@ -1,0 +1,29 @@
+Start testing: Dec 31 07:03 Pacific Standard Time
+----------------------------------------------------------
+1/1 Testing: StressTest
+1/1 Test: StressTest
+Command: "D:/DSA-Project/build/atomic-tests.exe"
+Directory: D:/DSA-Project/build
+"StressTest" start time: Dec 31 07:03 Pacific Standard Time
+Output:
+----------------------------------------------------------
+Inserted 0
+Inserted 1000
+Inserted 2000
+Inserted 3000
+Inserted 4000
+Inserted 5000
+Inserted 6000
+Inserted 7000
+Inserted 8000
+Inserted 9000
+Stress Test Complete
+<end of output>
+Test time =   0.09 sec
+----------------------------------------------------------
+Test Passed.
+"StressTest" end time: Dec 31 07:03 Pacific Standard Time
+"StressTest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Dec 31 07:03 Pacific Standard Time

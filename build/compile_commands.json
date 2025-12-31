@@ -55,8 +55,8 @@
 },
 {
   "directory": "D:/DSA-Project/build",
-  "command": "C:\\mingw64\\bin\\g++.exe -D_WIN32 @CMakeFiles/atomic-tests.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\atomic-tests.dir\\src\\manager.cpp.obj -c D:\\DSA-Project\\backend\\src\\manager.cpp",
-  "file": "D:/DSA-Project/backend/src/manager.cpp",
-  "output": "CMakeFiles/atomic-tests.dir/src/manager.cpp.obj"
+  "command": "C:\\mingw64\\bin\\g++.exe -D_WIN32 @CMakeFiles/atomic-tests.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\atomic-tests.dir\\src\\wort.cpp.obj -c D:\\DSA-Project\\backend\\src\\wort.cpp",
+  "file": "D:/DSA-Project/backend/src/wort.cpp",
+  "output": "CMakeFiles/atomic-tests.dir/src/wort.cpp.obj"
 }
 ]

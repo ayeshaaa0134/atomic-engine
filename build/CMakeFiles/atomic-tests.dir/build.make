@@ -131,20 +131,20 @@ CMakeFiles/atomic-tests.dir/src/primitives.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/atomic-tests.dir/src/primitives.cpp.s"
 	C:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\DSA-Project\backend\src\primitives.cpp -o CMakeFiles\atomic-tests.dir\src\primitives.cpp.s
 
-CMakeFiles/atomic-tests.dir/src/manager.cpp.obj: CMakeFiles/atomic-tests.dir/flags.make
-CMakeFiles/atomic-tests.dir/src/manager.cpp.obj: CMakeFiles/atomic-tests.dir/includes_CXX.rsp
-CMakeFiles/atomic-tests.dir/src/manager.cpp.obj: D:/DSA-Project/backend/src/manager.cpp
-CMakeFiles/atomic-tests.dir/src/manager.cpp.obj: CMakeFiles/atomic-tests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\DSA-Project\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/atomic-tests.dir/src/manager.cpp.obj"
-	C:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/atomic-tests.dir/src/manager.cpp.obj -MF CMakeFiles\atomic-tests.dir\src\manager.cpp.obj.d -o CMakeFiles\atomic-tests.dir\src\manager.cpp.obj -c D:\DSA-Project\backend\src\manager.cpp
+CMakeFiles/atomic-tests.dir/src/wort.cpp.obj: CMakeFiles/atomic-tests.dir/flags.make
+CMakeFiles/atomic-tests.dir/src/wort.cpp.obj: CMakeFiles/atomic-tests.dir/includes_CXX.rsp
+CMakeFiles/atomic-tests.dir/src/wort.cpp.obj: D:/DSA-Project/backend/src/wort.cpp
+CMakeFiles/atomic-tests.dir/src/wort.cpp.obj: CMakeFiles/atomic-tests.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\DSA-Project\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/atomic-tests.dir/src/wort.cpp.obj"
+	C:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/atomic-tests.dir/src/wort.cpp.obj -MF CMakeFiles\atomic-tests.dir\src\wort.cpp.obj.d -o CMakeFiles\atomic-tests.dir\src\wort.cpp.obj -c D:\DSA-Project\backend\src\wort.cpp
 
-CMakeFiles/atomic-tests.dir/src/manager.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/atomic-tests.dir/src/manager.cpp.i"
-	C:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\DSA-Project\backend\src\manager.cpp > CMakeFiles\atomic-tests.dir\src\manager.cpp.i
+CMakeFiles/atomic-tests.dir/src/wort.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/atomic-tests.dir/src/wort.cpp.i"
+	C:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\DSA-Project\backend\src\wort.cpp > CMakeFiles\atomic-tests.dir\src\wort.cpp.i
 
-CMakeFiles/atomic-tests.dir/src/manager.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/atomic-tests.dir/src/manager.cpp.s"
-	C:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\DSA-Project\backend\src\manager.cpp -o CMakeFiles\atomic-tests.dir\src\manager.cpp.s
+CMakeFiles/atomic-tests.dir/src/wort.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/atomic-tests.dir/src/wort.cpp.s"
+	C:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\DSA-Project\backend\src\wort.cpp -o CMakeFiles\atomic-tests.dir\src\wort.cpp.s
 
 # Object files for target atomic-tests
 atomic__tests_OBJECTS = \
@@ -152,7 +152,7 @@ atomic__tests_OBJECTS = \
 "CMakeFiles/atomic-tests.dir/src/b_tree.cpp.obj" \
 "CMakeFiles/atomic-tests.dir/src/allocator.cpp.obj" \
 "CMakeFiles/atomic-tests.dir/src/primitives.cpp.obj" \
-"CMakeFiles/atomic-tests.dir/src/manager.cpp.obj"
+"CMakeFiles/atomic-tests.dir/src/wort.cpp.obj"
 
 # External object files for target atomic-tests
 atomic__tests_EXTERNAL_OBJECTS =
@@ -161,7 +161,7 @@ atomic-tests.exe: CMakeFiles/atomic-tests.dir/tests/stress_test.cpp.obj
 atomic-tests.exe: CMakeFiles/atomic-tests.dir/src/b_tree.cpp.obj
 atomic-tests.exe: CMakeFiles/atomic-tests.dir/src/allocator.cpp.obj
 atomic-tests.exe: CMakeFiles/atomic-tests.dir/src/primitives.cpp.obj
-atomic-tests.exe: CMakeFiles/atomic-tests.dir/src/manager.cpp.obj
+atomic-tests.exe: CMakeFiles/atomic-tests.dir/src/wort.cpp.obj
 atomic-tests.exe: CMakeFiles/atomic-tests.dir/build.make
 atomic-tests.exe: CMakeFiles/atomic-tests.dir/linkLibs.rsp
 atomic-tests.exe: CMakeFiles/atomic-tests.dir/objects1.rsp
