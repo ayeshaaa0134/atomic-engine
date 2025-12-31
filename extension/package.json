@@ -1,0 +1,180 @@
+{
+    "name": "atomic-tree-engine",
+    "displayName": "Atomic Tree Engine",
+    "description": "Professional Persistent Memory Visualization & Atomic Tree Engine",
+    "version": "1.1.9",
+    "publisher": "ayesha-241419",
+    "author": {
+        "name": "Ayesha Siddiqa"
+    },
+    "contributors": [
+        {
+            "name": "Hadia Naveed",
+            "email": ""
+        }
+    ],
+    "icon": "resources/icon.png",
+    "engines": {
+        "vscode": "^1.80.0"
+    },
+    "categories": [
+        "Visualization",
+        "Education",
+        "Other"
+    ],
+    "activationEvents": [
+        "onView:atomic-tree-dashboard",
+        "onCommand:atomic-tree.startWorkload"
+    ],
+    "main": "./dist/extension.js",
+    "contributes": {
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "atomic-tree",
+                    "title": "Atomic Tree Engine",
+                    "icon": "resources/icon.png"
+                }
+            ]
+        },
+        "views": {
+            "atomic-tree": [
+                {
+                    "id": "atomic-tree-dashboard",
+                    "name": "Dashboard"
+                },
+                {
+                    "id": "atomic-tree-explorer",
+                    "name": "Structure Explorer"
+                },
+                {
+                    "id": "atomic-tree-memory",
+                    "name": "Memory Heatmap"
+                },
+                {
+                    "id": "atomic-tree-radar",
+                    "name": "Out-of-Order Radar"
+                },
+                {
+                    "id": "atomic-tree-crashes",
+                    "name": "Crashes & GC"
+                }
+            ]
+        },
+        "commands": [
+            {
+                "command": "atomic-tree.startWorkload",
+                "title": "Atomic Tree: Start Workload",
+                "icon": "$(play)"
+            },
+            {
+                "command": "atomic-tree.stopWorkload",
+                "title": "Atomic Tree: Stop Workload",
+                "icon": "$(debug-stop)"
+            },
+            {
+                "command": "atomic-tree.switchStructure",
+                "title": "Atomic Tree: Switch Data Structure",
+                "icon": "$(arrow-swap)"
+            },
+            {
+                "command": "atomic-tree.simulateCrash",
+                "title": "Atomic Tree: Simulate Crash",
+                "icon": "$(zap)"
+            },
+            {
+                "command": "atomic-tree.runGC",
+                "title": "Atomic Tree: Run Garbage Collector",
+                "icon": "$(trash)"
+            },
+            {
+                "command": "atomic-tree.exportLogs",
+                "title": "Atomic Tree: Export Logs",
+                "icon": "$(save)"
+            },
+            {
+                "command": "atomic-tree.toggleRadar",
+                "title": "Atomic Tree: Toggle Radar",
+                "icon": "$(radio-tower)"
+            },
+            {
+                "command": "atomic-tree.resetMetrics",
+                "title": "Atomic Tree: Reset Metrics",
+                "icon": "$(refresh)"
+            }
+        ],
+        "menus": {
+            "view/title": [
+                {
+                    "command": "atomic-tree.startWorkload",
+                    "group": "navigation@1",
+                    "when": "view == atomic-tree-dashboard"
+                },
+                {
+                    "command": "atomic-tree.stopWorkload",
+                    "group": "navigation@2",
+                    "when": "view == atomic-tree-dashboard"
+                },
+                {
+                    "command": "atomic-tree.resetMetrics",
+                    "group": "navigation@3",
+                    "when": "view == atomic-tree-dashboard"
+                },
+                {
+                    "command": "atomic-tree.simulateCrash",
+                    "group": "navigation@1",
+                    "when": "view == atomic-tree-crashes"
+                },
+                {
+                    "command": "atomic-tree.runGC",
+                    "group": "navigation@2",
+                    "when": "view == atomic-tree-crashes"
+                },
+                {
+                    "command": "atomic-tree.toggleRadar",
+                    "group": "navigation@1",
+                    "when": "view == atomic-tree-radar"
+                }
+            ]
+        },
+        "configuration": {
+            "title": "Atomic Tree Engine",
+            "properties": {
+                "atomicTree.backendPath": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Path to a custom backend executable (e.g., ${workspaceFolder}/build/my_engine.exe). If empty, uses the bundled engine."
+                }
+            }
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run package",
+        "compile": "webpack",
+        "watch": "webpack --watch",
+        "package": "webpack --mode production --devtool hidden-source-map",
+        "compile-tests": "tsc -p . --outDir out",
+        "watch-tests": "tsc -p . -w --outDir out",
+        "pretest": "npm run compile-tests && npm run compile && npm run lint",
+        "lint": "eslint src --ext ts",
+        "test": "node ./out/test/runTest.js"
+    },
+    "devDependencies": {
+        "@types/vscode": "^1.80.0",
+        "@types/glob": "^8.1.0",
+        "@types/mocha": "^10.0.1",
+        "@types/node": "20.2.5",
+        "@typescript-eslint/eslint-plugin": "^5.59.8",
+        "@typescript-eslint/parser": "^5.59.8",
+        "eslint": "^8.41.0",
+        "glob": "^8.1.0",
+        "mocha": "^10.2.0",
+        "typescript": "^5.1.3",
+        "ts-loader": "^9.4.3",
+        "webpack": "^5.85.0",
+        "webpack-cli": "^5.1.1"
+    },
+    "dependencies": {
+        "vscode-messenger": "^0.3.0"
+    }
+}

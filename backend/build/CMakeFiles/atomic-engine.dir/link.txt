@@ -1,0 +1,3 @@
+"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\atomic-engine.dir/objects.a
+C:\mingw64\bin\ar.exe qc CMakeFiles\atomic-engine.dir/objects.a @CMakeFiles\atomic-engine.dir\objects1.rsp
+C:\mingw64\bin\c++.exe -static -Wl,--whole-archive CMakeFiles\atomic-engine.dir/objects.a -Wl,--no-whole-archive -o atomic-engine.exe -Wl,--out-implib,libatomic-engine.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\atomic-engine.dir\linkLibs.rsp
