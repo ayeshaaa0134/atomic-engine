@@ -1,0 +1,62 @@
+[
+{
+  "directory": "D:/DSA-Project/build",
+  "command": "C:\\mingw64\\bin\\g++.exe -D_WIN32 @CMakeFiles/atomic-engine.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\atomic-engine.dir\\src\\allocator.cpp.obj -c D:\\DSA-Project\\backend\\src\\allocator.cpp",
+  "file": "D:/DSA-Project/backend/src/allocator.cpp",
+  "output": "CMakeFiles/atomic-engine.dir/src/allocator.cpp.obj"
+},
+{
+  "directory": "D:/DSA-Project/build",
+  "command": "C:\\mingw64\\bin\\g++.exe -D_WIN32 @CMakeFiles/atomic-engine.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\atomic-engine.dir\\src\\b_tree.cpp.obj -c D:\\DSA-Project\\backend\\src\\b_tree.cpp",
+  "file": "D:/DSA-Project/backend/src/b_tree.cpp",
+  "output": "CMakeFiles/atomic-engine.dir/src/b_tree.cpp.obj"
+},
+{
+  "directory": "D:/DSA-Project/build",
+  "command": "C:\\mingw64\\bin\\g++.exe -D_WIN32 @CMakeFiles/atomic-engine.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\atomic-engine.dir\\src\\manager.cpp.obj -c D:\\DSA-Project\\backend\\src\\manager.cpp",
+  "file": "D:/DSA-Project/backend/src/manager.cpp",
+  "output": "CMakeFiles/atomic-engine.dir/src/manager.cpp.obj"
+},
+{
+  "directory": "D:/DSA-Project/build",
+  "command": "C:\\mingw64\\bin\\g++.exe -D_WIN32 @CMakeFiles/atomic-engine.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\atomic-engine.dir\\src\\primitives.cpp.obj -c D:\\DSA-Project\\backend\\src\\primitives.cpp",
+  "file": "D:/DSA-Project/backend/src/primitives.cpp",
+  "output": "CMakeFiles/atomic-engine.dir/src/primitives.cpp.obj"
+},
+{
+  "directory": "D:/DSA-Project/build",
+  "command": "C:\\mingw64\\bin\\g++.exe -D_WIN32 @CMakeFiles/atomic-engine.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\atomic-engine.dir\\src\\wort.cpp.obj -c D:\\DSA-Project\\backend\\src\\wort.cpp",
+  "file": "D:/DSA-Project/backend/src/wort.cpp",
+  "output": "CMakeFiles/atomic-engine.dir/src/wort.cpp.obj"
+},
+{
+  "directory": "D:/DSA-Project/build",
+  "command": "C:\\mingw64\\bin\\g++.exe -D_WIN32 @CMakeFiles/atomic-tests.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\atomic-tests.dir\\tests\\stress_test.cpp.obj -c D:\\DSA-Project\\backend\\tests\\stress_test.cpp",
+  "file": "D:/DSA-Project/backend/tests/stress_test.cpp",
+  "output": "CMakeFiles/atomic-tests.dir/tests/stress_test.cpp.obj"
+},
+{
+  "directory": "D:/DSA-Project/build",
+  "command": "C:\\mingw64\\bin\\g++.exe -D_WIN32 @CMakeFiles/atomic-tests.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\atomic-tests.dir\\src\\b_tree.cpp.obj -c D:\\DSA-Project\\backend\\src\\b_tree.cpp",
+  "file": "D:/DSA-Project/backend/src/b_tree.cpp",
+  "output": "CMakeFiles/atomic-tests.dir/src/b_tree.cpp.obj"
+},
+{
+  "directory": "D:/DSA-Project/build",
+  "command": "C:\\mingw64\\bin\\g++.exe -D_WIN32 @CMakeFiles/atomic-tests.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\atomic-tests.dir\\src\\allocator.cpp.obj -c D:\\DSA-Project\\backend\\src\\allocator.cpp",
+  "file": "D:/DSA-Project/backend/src/allocator.cpp",
+  "output": "CMakeFiles/atomic-tests.dir/src/allocator.cpp.obj"
+},
+{
+  "directory": "D:/DSA-Project/build",
+  "command": "C:\\mingw64\\bin\\g++.exe -D_WIN32 @CMakeFiles/atomic-tests.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\atomic-tests.dir\\src\\primitives.cpp.obj -c D:\\DSA-Project\\backend\\src\\primitives.cpp",
+  "file": "D:/DSA-Project/backend/src/primitives.cpp",
+  "output": "CMakeFiles/atomic-tests.dir/src/primitives.cpp.obj"
+},
+{
+  "directory": "D:/DSA-Project/build",
+  "command": "C:\\mingw64\\bin\\g++.exe -D_WIN32 @CMakeFiles/atomic-tests.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\atomic-tests.dir\\src\\manager.cpp.obj -c D:\\DSA-Project\\backend\\src\\manager.cpp",
+  "file": "D:/DSA-Project/backend/src/manager.cpp",
+  "output": "CMakeFiles/atomic-tests.dir/src/manager.cpp.obj"
+}
+]
