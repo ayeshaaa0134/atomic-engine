@@ -64,6 +64,16 @@ CMAKE_BINARY_DIR = D:\DSA-Project\backend\build
 #=============================================================================
 # Targets provided globally by CMake.
 
+# Special rule for the target test
+test:
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running tests..."
+	"C:\Program Files\CMake\bin\ctest.exe" $(ARGS)
+.PHONY : test
+
+# Special rule for the target test
+test/fast: test
+.PHONY : test/fast
+
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running CMake cache editor..."
@@ -141,6 +151,43 @@ atomic-tests/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\atomic-tests.dir\build.make CMakeFiles/atomic-tests.dir/build
 .PHONY : atomic-tests/fast
 
+#=============================================================================
+# Target rules for targets named example-code
+
+# Build rule for target.
+example-code: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 example-code
+.PHONY : example-code
+
+# fast build rule for target.
+example-code/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\example-code.dir\build.make CMakeFiles/example-code.dir/build
+.PHONY : example-code/fast
+
+D_/DSA-Project/examples/my_custom_code.obj: D_/DSA-Project/examples/my_custom_code.cpp.obj
+.PHONY : D_/DSA-Project/examples/my_custom_code.obj
+
+# target to build an object file
+D_/DSA-Project/examples/my_custom_code.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\example-code.dir\build.make CMakeFiles/example-code.dir/D_/DSA-Project/examples/my_custom_code.cpp.obj
+.PHONY : D_/DSA-Project/examples/my_custom_code.cpp.obj
+
+D_/DSA-Project/examples/my_custom_code.i: D_/DSA-Project/examples/my_custom_code.cpp.i
+.PHONY : D_/DSA-Project/examples/my_custom_code.i
+
+# target to preprocess a source file
+D_/DSA-Project/examples/my_custom_code.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\example-code.dir\build.make CMakeFiles/example-code.dir/D_/DSA-Project/examples/my_custom_code.cpp.i
+.PHONY : D_/DSA-Project/examples/my_custom_code.cpp.i
+
+D_/DSA-Project/examples/my_custom_code.s: D_/DSA-Project/examples/my_custom_code.cpp.s
+.PHONY : D_/DSA-Project/examples/my_custom_code.s
+
+# target to generate assembly for a file
+D_/DSA-Project/examples/my_custom_code.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\example-code.dir\build.make CMakeFiles/example-code.dir/D_/DSA-Project/examples/my_custom_code.cpp.s
+.PHONY : D_/DSA-Project/examples/my_custom_code.cpp.s
+
 src/allocator.obj: src/allocator.cpp.obj
 .PHONY : src/allocator.obj
 
@@ -201,7 +248,6 @@ src/manager.obj: src/manager.cpp.obj
 # target to build an object file
 src/manager.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\atomic-engine.dir\build.make CMakeFiles/atomic-engine.dir/src/manager.cpp.obj
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\atomic-tests.dir\build.make CMakeFiles/atomic-tests.dir/src/manager.cpp.obj
 .PHONY : src/manager.cpp.obj
 
 src/manager.i: src/manager.cpp.i
@@ -210,7 +256,6 @@ src/manager.i: src/manager.cpp.i
 # target to preprocess a source file
 src/manager.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\atomic-engine.dir\build.make CMakeFiles/atomic-engine.dir/src/manager.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\atomic-tests.dir\build.make CMakeFiles/atomic-tests.dir/src/manager.cpp.i
 .PHONY : src/manager.cpp.i
 
 src/manager.s: src/manager.cpp.s
@@ -219,7 +264,6 @@ src/manager.s: src/manager.cpp.s
 # target to generate assembly for a file
 src/manager.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\atomic-engine.dir\build.make CMakeFiles/atomic-engine.dir/src/manager.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\atomic-tests.dir\build.make CMakeFiles/atomic-tests.dir/src/manager.cpp.s
 .PHONY : src/manager.cpp.s
 
 src/primitives.obj: src/primitives.cpp.obj
@@ -255,6 +299,7 @@ src/wort.obj: src/wort.cpp.obj
 # target to build an object file
 src/wort.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\atomic-engine.dir\build.make CMakeFiles/atomic-engine.dir/src/wort.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\atomic-tests.dir\build.make CMakeFiles/atomic-tests.dir/src/wort.cpp.obj
 .PHONY : src/wort.cpp.obj
 
 src/wort.i: src/wort.cpp.i
@@ -263,6 +308,7 @@ src/wort.i: src/wort.cpp.i
 # target to preprocess a source file
 src/wort.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\atomic-engine.dir\build.make CMakeFiles/atomic-engine.dir/src/wort.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\atomic-tests.dir\build.make CMakeFiles/atomic-tests.dir/src/wort.cpp.i
 .PHONY : src/wort.cpp.i
 
 src/wort.s: src/wort.cpp.s
@@ -271,6 +317,7 @@ src/wort.s: src/wort.cpp.s
 # target to generate assembly for a file
 src/wort.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\atomic-engine.dir\build.make CMakeFiles/atomic-engine.dir/src/wort.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\atomic-tests.dir\build.make CMakeFiles/atomic-tests.dir/src/wort.cpp.s
 .PHONY : src/wort.cpp.s
 
 tests/stress_test.obj: tests/stress_test.cpp.obj
@@ -305,8 +352,13 @@ help:
 	@echo ... depend
 	@echo ... edit_cache
 	@echo ... rebuild_cache
+	@echo ... test
 	@echo ... atomic-engine
 	@echo ... atomic-tests
+	@echo ... example-code
+	@echo ... D_/DSA-Project/examples/my_custom_code.obj
+	@echo ... D_/DSA-Project/examples/my_custom_code.i
+	@echo ... D_/DSA-Project/examples/my_custom_code.s
 	@echo ... src/allocator.obj
 	@echo ... src/allocator.i
 	@echo ... src/allocator.s

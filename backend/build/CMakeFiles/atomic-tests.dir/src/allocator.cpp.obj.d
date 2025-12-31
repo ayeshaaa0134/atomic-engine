@@ -225,6 +225,9 @@ CMakeFiles/atomic-tests.dir/src/allocator.cpp.obj: \
  C:/mingw64/lib/gcc/x86_64-w64-mingw32/15.2.0/include/avx10_2copyintrin.h \
  C:/mingw64/lib/gcc/x86_64-w64-mingw32/15.2.0/include/movrsintrin.h \
  C:/mingw64/lib/gcc/x86_64-w64-mingw32/15.2.0/include/amxmovrsintrin.h \
+ C:/mingw64/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/cstring \
+ C:/mingw64/x86_64-w64-mingw32/include/string.h \
+ C:/mingw64/x86_64-w64-mingw32/include/sec_api/string_s.h \
  C:/mingw64/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/iostream \
  C:/mingw64/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/ostream \
  C:/mingw64/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/ostream.h \
@@ -279,8 +282,6 @@ CMakeFiles/atomic-tests.dir/src/allocator.cpp.obj: \
  C:/mingw64/x86_64-w64-mingw32/include/psdk_inc/intrin-impl.h \
  C:/mingw64/x86_64-w64-mingw32/include/basetsd.h \
  C:/mingw64/x86_64-w64-mingw32/include/guiddef.h \
- C:/mingw64/x86_64-w64-mingw32/include/string.h \
- C:/mingw64/x86_64-w64-mingw32/include/sec_api/string_s.h \
  C:/mingw64/lib/gcc/x86_64-w64-mingw32/15.2.0/include/x86intrin.h \
  C:/mingw64/lib/gcc/x86_64-w64-mingw32/15.2.0/include/mm3dnow.h \
  C:/mingw64/lib/gcc/x86_64-w64-mingw32/15.2.0/include/fma4intrin.h \

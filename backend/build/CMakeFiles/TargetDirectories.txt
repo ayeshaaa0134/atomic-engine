@@ -1,4 +1,6 @@
 D:/DSA-Project/backend/build/CMakeFiles/atomic-engine.dir
 D:/DSA-Project/backend/build/CMakeFiles/atomic-tests.dir
+D:/DSA-Project/backend/build/CMakeFiles/example-code.dir
+D:/DSA-Project/backend/build/CMakeFiles/test.dir
 D:/DSA-Project/backend/build/CMakeFiles/edit_cache.dir
 D:/DSA-Project/backend/build/CMakeFiles/rebuild_cache.dir
