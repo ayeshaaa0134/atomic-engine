@@ -9,8 +9,7 @@
     },
     "contributors": [
         {
-            "name": "Hadia Naveed",
-            "email": ""
+            "name": "Hadia Naveed"
         }
     ],
     "icon": "resources/icon.png",
@@ -23,6 +22,13 @@
         "Other"
     ],
     "main": "./dist/extension.js",
+    "activationEvents": [
+        "onView:atomic-tree-dashboard",
+        "onView:atomic-tree-explorer",
+        "onView:atomic-tree-memory",
+        "onView:atomic-tree-radar",
+        "onView:atomic-tree-crashes"
+    ],
     "contributes": {
         "viewsContainers": {
             "activitybar": [
@@ -37,23 +43,28 @@
             "atomic-tree": [
                 {
                     "id": "atomic-tree-dashboard",
-                    "name": "Dashboard"
+                    "name": "Dashboard",
+                    "icon": "$(dashboard)"
                 },
                 {
                     "id": "atomic-tree-explorer",
-                    "name": "Structure Explorer"
+                    "name": "Structure Explorer",
+                    "icon": "$(list-tree)"
                 },
                 {
                     "id": "atomic-tree-memory",
-                    "name": "Memory Heatmap"
+                    "name": "Memory Heatmap",
+                    "icon": "$(flame)"
                 },
                 {
                     "id": "atomic-tree-radar",
-                    "name": "Out-of-Order Radar"
+                    "name": "Out-of-Order Radar",
+                    "icon": "$(radar)"
                 },
                 {
                     "id": "atomic-tree-crashes",
-                    "name": "Crashes & GC"
+                    "name": "Crashes & GC",
+                    "icon": "$(bug)"
                 }
             ]
         },

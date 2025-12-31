@@ -112,12 +112,17 @@ export function deactivate() {
 }
 
 class AtomicTreeWebviewProvider implements vscode.WebviewViewProvider {
-    private _view?: vscode.WebviewView;
+    private _views = new Set<vscode.WebviewView>();
 
     constructor(private readonly _extensionUri: vscode.Uri) { }
 
     resolveWebviewView(webviewView: vscode.WebviewView) {
-        this._view = webviewView;
+        this._views.add(webviewView);
+
+        webviewView.onDidDispose(() => {
+            this._views.delete(webviewView);
+        });
+
         webviewView.webview.options = {
             enableScripts: true,
             localResourceRoots: [this._extensionUri]
@@ -127,8 +132,8 @@ class AtomicTreeWebviewProvider implements vscode.WebviewViewProvider {
     }
 
     public postMessage(message: any) {
-        if (this._view) {
-            this._view.webview.postMessage(message);
+        for (const view of this._views) {
+            view.webview.postMessage(message);
         }
     }
 

@@ -1,7 +1,11 @@
 #include "allocator.h"
 #include "primitives.h"
+#include <cstdint>
+#include <cstdlib>
+#include <cstring>
 #include <iostream>
 #include <windows.h>
+
 
 Allocator::Allocator(const std::string &filename) : used_blocks_count(0) {
   total_blocks = POOL_SIZE / BLOCK_SIZE;

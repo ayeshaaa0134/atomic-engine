@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 project(AtomicTreeEngine VERSION 1.0.0 LANGUAGES CXX)
+# Updated build configuration to fix path errors
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -27,6 +28,10 @@ target_link_libraries(atomic-engine PRIVATE ${OS_LIBS})
 # Test Executable
 add_executable(atomic-tests tests/stress_test.cpp src/b_tree.cpp src/allocator.cpp src/primitives.cpp src/wort.cpp)
 target_link_libraries(atomic-tests PRIVATE ${OS_LIBS})
+
+# Example Code (for IntelliSense and build check)
+add_executable(example-code ../examples/my_custom_code.cpp)
+target_link_libraries(example-code PRIVATE ${OS_LIBS})
 
 enable_testing()
 add_test(NAME StressTest COMMAND atomic-tests)

@@ -5,7 +5,7 @@
 
 class Allocator {
 public:
-  static const uint64_t BLOCK_SIZE = 64;                // Cache Line
+  static const uint64_t BLOCK_SIZE = 4096;              // 4KB Page Size
   static const uint64_t POOL_SIZE = 1024 * 1024 * 1024; // 1GB Simulated PM
 
   Allocator(const std::string &filename);
