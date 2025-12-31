@@ -1,0 +1,7 @@
+node_modules/
+pmem.dat
+*.exe
+*.vsix
+.vscode/
+dist/
+out/

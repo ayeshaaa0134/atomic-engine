@@ -1,6 +1,0 @@
-{
-    // Path to your custom backend executable.
-    // Use ${workspaceFolder} to refer to the root of your project.
-    // Example: "${workspaceFolder}/backend/build/atomic-engine.exe"
-    "atomicTree.backendPath": "${workspaceFolder}/my_test.exe"
-}
