@@ -25,11 +25,39 @@
 	ProcessorClockFrequency="2496"
 	>
 	<Testing>
-		<StartDateTime>Dec 31 08:20 Pacific Standard Time</StartDateTime>
-		<StartTestTime>1767198014</StartTestTime>
-		<TestList/>
-		<EndDateTime>Dec 31 08:20 Pacific Standard Time</EndDateTime>
-		<EndTestTime>1767198014</EndTestTime>
+		<StartDateTime>Dec 31 08:32 Pacific Standard Time</StartDateTime>
+		<StartTestTime>1767198720</StartTestTime>
+		<TestList>
+			<Test>./StressTest</Test>
+		</TestList>
+		<Test Status="passed">
+			<Name>StressTest</Name>
+			<Path>.</Path>
+			<FullName>./StressTest</FullName>
+			<FullCommandLine>D:\DSA-Project\build\atomic-tests.exe</FullCommandLine>
+			<Results>
+				<NamedMeasurement type="numeric/double" name="Execution Time">
+					<Value>0.250748</Value>
+				</NamedMeasurement>
+				<NamedMeasurement type="numeric/double" name="Processors">
+					<Value>1</Value>
+				</NamedMeasurement>
+				<NamedMeasurement type="text/string" name="Completion Status">
+					<Value>Completed</Value>
+				</NamedMeasurement>
+				<NamedMeasurement type="text/string" name="Command Line">
+					<Value>D:\DSA-Project\build\atomic-tests.exe</Value>
+				</NamedMeasurement>
+				<NamedMeasurement type="text/string" name="Environment">
+					<Value>#CTEST_RESOURCE_GROUP_COUNT=</Value>
+				</NamedMeasurement>
+				<Measurement>
+					<Value encoding="base64" compression="gzip">eJzzzCtOLSpJTVEw4PKEMQ0NDJB4Rig8YxSeCQrPFIVnhsIzR+FZoPAsQbzgkqLU4mKFkNTiEgXn/NyCnNSSVC4AGxIw1Q==</Value>
+				</Measurement>
+			</Results>
+		</Test>
+		<EndDateTime>Dec 31 08:32 Pacific Standard Time</EndDateTime>
+		<EndTestTime>1767198721</EndTestTime>
 		<ElapsedMinutes>0</ElapsedMinutes>
 	</Testing>
 </Site>
